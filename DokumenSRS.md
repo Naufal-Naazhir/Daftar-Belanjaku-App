@@ -1,5 +1,6 @@
 ### Software Requirements Specification (SRS) - Aplikasi Daftar Belanjaku
 
+**Nama Tim:** Naufal Naazhir Arkaan,  M. Arya Pratama
 **Versi:** 1.0
 **Tanggal:** 16 september 2025
 
