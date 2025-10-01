@@ -1,0 +1,61 @@
+<!-- pengaturan.html (Versi Lengkap dengan Navigasi) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Tombol kembali ini bisa Anda hapus jika sudah ada navigasi bawah,
+                 tapi tidak apa-apa jika tetap ada untuk saat ini. -->
+            <a href="index.html" style="text-decoration: none;">&larr; Back</a>
+            <h1>Pengaturan</h1>
+        </div>
+        <div class="content">
+            <!-- Daftar Menu Pengaturan -->
+            <div class="settings-list">
+                <div class="settings-item">
+                    <span>Remove Ads</span>
+                </div>
+                <div class="settings-item">
+                    <span>Rate Us on Play Store</span>
+                </div>
+                <div class="settings-item">
+                    <span>Send Feedback</span>
+                </div>
+                <div class="settings-item">
+                    <span>Privacy Policy</span>
+                </div>
+                <div class="settings-item">
+                    <span>Terms of Service</span>
+                </div>
+            </div>
+            
+            <div class="app-version">
+                <p>App Version 1.0.0 (MVP)</p>
+            </div>
+        </div>
+    </div> <!-- Akhir dari .container -->
+
+    <!-- ======================================================= -->
+    <!-- == BAGIAN BARU: BILAH NAVIGASI BAWAH DITAMBAHKAN DI SINI == -->
+    <!-- ======================================================= -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span>Lists</span>
+        </a>
+        <a href="pengaturan.html" class="nav-item active"> <!-- Perhatikan kelas 'active' di sini -->
+            <span>Pengaturan</span>
+        </a>
+    </div>
+    <!-- ======================================================= -->
+    <!-- =================== AKHIR BAGIAN BARU =================== -->
+    <!-- ======================================================= -->
+
+    <script src="script.js"></script>
+</body>
+</html>

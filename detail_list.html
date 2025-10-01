@@ -1,0 +1,40 @@
+<!-- detail_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermarket</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Tombol kembali sederhana -->
+            <a href="index.html" style="text-decoration: none;">&larr; Back</a>
+            <h1>Supermarket</h1>
+        </div>
+        <div class="content">
+            <!-- Daftar Item -->
+            <div class="item">
+                <input type="checkbox">
+                <label>Beras</label>
+                <span>Rp 60.000</span>
+            </div>
+            <div class="item">
+                <input type="checkbox">
+                <label>Saus Tomat</label>
+                <span>Rp 12.000</span>
+            </div>
+             <!-- Tambahkan item lain sesuai contoh -->
+        </div>
+        <div class="total-summary">
+            <p>Unchecked: Rp 72.000</p>
+            <p>Checked: Rp 0</p>
+            <p>Total: Rp 72.000</p>
+        </div>
+        <button id="add-item-btn" class="fab">+</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

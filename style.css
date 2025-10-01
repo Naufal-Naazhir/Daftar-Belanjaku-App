@@ -1,0 +1,183 @@
+/* style.css (Versi Lengkap dan Final) */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    /* PENYESUAIAN PENTING: Membuat ruang untuk navigasi bawah */
+    padding-bottom: 80px; 
+}
+
+.container {
+    max-width: 480px; /* Lebar umum ponsel */
+    margin: auto;
+    background-color: #fff;
+    min-height: 100vh;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.fab { /* Floating Action Button */
+    position: fixed;
+    /* Penyesuaian posisi agar tidak terlalu dekat dengan nav bar baru */
+    bottom: 90px; 
+    right: 30px;
+    background-color: #007bff;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+.item label {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+.total-summary {
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.input-field {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Penting! */
+}
+
+/* --- Styles for tambah_item.html --- */
+.search-bar-container {
+    margin-bottom: 20px;
+}
+
+.suggestion-list {
+    margin-top: 10px;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f9f9f9;
+}
+
+.add-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    color: #555;
+    margin-right: 15px;
+}
+
+/* --- Styles for pengaturan.html --- */
+.settings-list {
+    border-top: 1px solid #eee;
+}
+
+.settings-item {
+    font-size: 16px;
+    padding: 20px 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.settings-item:hover {
+    background-color: #f9f9f9;
+}
+
+.app-version {
+    text-align: center;
+    margin-top: 40px;
+    color: #888;
+}
+
+
+/* ======================================================= */
+/* == BAGIAN BARU: STYLES UNTUK BILAH NAVIGASI BAWAH == */
+/* ======================================================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 480px; /* Samakan dengan .container */
+    margin: auto;
+    display: flex;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+}
+
+.nav-item {
+    flex: 1; /* Agar kedua item berbagi ruang secara merata */
+    text-align: center;
+    padding: 15px 0;
+    text-decoration: none;
+    color: #888;
+    font-size: 14px;
+}
+
+.nav-item.active {
+    color: #007bff; /* Warna biru untuk menandakan halaman aktif */
+    font-weight: bold;
+}
