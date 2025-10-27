@@ -54,6 +54,15 @@ erDiagram
         INTEGER order_index
     }
 
+    pantry_items {
+        INT id PK "Primary Key"
+        TEXT name
+        REAL quantity "(Nullable)"
+        TEXT unit "(Nullable)"
+        INTEGER purchase_date
+        INTEGER expiry_date "(Nullable)"
+    }
+
     shopping_lists ||--|{ shopping_items : "memiliki"
     item_categories ||--|{ preset_items : "memiliki"
 

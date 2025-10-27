@@ -99,6 +99,34 @@ Tabel ini akan menyimpan item-item default yang terkait dengan setiap kategori p
 
 ---
 
+---
+
+**5. Tabel: `pantry_items`**
+Tabel ini menyimpan inventaris item yang sudah dibeli oleh pengguna, yang dipindahkan dari daftar belanja.
+
+*   **Tujuan:** Melacak stok barang di rumah dan tanggal kedaluwarsanya.
+*   **Kolom:**
+    *   `id` (INTEGER)
+        *   **Constraint:** PRIMARY KEY, AUTOINCREMENT
+        *   **Deskripsi:** ID unik untuk setiap item di pantry.
+    *   `name` (TEXT)
+        *   **Constraint:** NOT NULL
+        *   **Deskripsi:** Nama barang.
+    *   `quantity` (REAL)
+        *   **Constraint:** NULLABLE
+        *   **Deskripsi:** Kuantitas barang.
+    *   `unit` (TEXT)
+        *   **Constraint:** NULLABLE
+        *   **Deskripsi:** Satuan barang.
+    *   `purchase_date` (INTEGER)
+        *   **Constraint:** NOT NULL
+        *   **Deskripsi:** Timestamp saat item ditambahkan ke pantry.
+    *   `expiry_date` (INTEGER)
+        *   **Constraint:** NULLABLE
+        *   **Deskripsi:** Timestamp tanggal kedaluwarsa item.
+
+---
+
 ### Diagram Hubungan Entitas (ERD - Konseptual)
 
 ```
@@ -109,12 +137,15 @@ Tabel ini akan menyimpan item-item default yang terkait dengan setiap kategori p
 | name            |      | id (PK)         |      | name            |    |
 | created_at      |      | name            |      +-----------------+    |
 | updated_at      |      | price           |                             |
-+-----------------+      | quantity        |                             |
-                         | unit            |                             |
-                         | is_bought       |                             |
-                         | order_index     |                             |
-                         +-----------------+                             |
-                                                                         |
++-----------------+      | quantity        |      +-----------------+    |
+                         | unit            |      | pantry_items    |    |
+                         | is_bought       |      +-----------------+    |
+                         | order_index     |      | id (PK)         |    |
+                         +-----------------+      | name            |    |
+                                                  | quantity        |    |
+                                                  | purchase_date   |    |
+                                                  | expiry_date     |    |
+                                                  +-----------------+    |
                                                                          |
                                              +-----------------+         |
                                              | preset_items    |         |
