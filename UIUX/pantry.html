@@ -1,0 +1,107 @@
+<!-- pantry.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Pantry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Pantry</h1>
+        </div>
+        <div class="content" id="pantry-container" style="padding: 20px; padding-bottom: 100px;">
+            <!-- Pantry items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Lists</span>
+        </a>
+        <a href="pantry.html" class="nav-item active">
+            <span class="nav-icon">📦</span>
+            <span class="nav-label">Pantry</span>
+        </a>
+        <a href="pengaturan.html" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Settings</span>
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPantryItems();
+        });
+
+        function loadPantryItems() {
+            const items = JSON.parse(localStorage.getItem('pantryItems') || '[]');
+            const container = document.getElementById('pantry-container');
+
+            if (items.length === 0) {
+                // Empty state
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px; color: #ddd;">📦</div>
+                        <h3 style="font-size: 1.2rem; color: #333; margin-bottom: 12px; font-weight: 600;">Pantry is empty</h3>
+                        <p style="font-size: 0.95rem; color: #888;">Move purchased items from your shopping list to fill your pantry.</p>
+                    </div>
+                `;
+            } else {
+                // Display items
+                container.innerHTML = '';
+                items.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = 'display: flex; align-items: center; padding: 14px; margin-bottom: 10px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #28a745;';
+                    
+                    const label = document.createElement('span');
+                    label.textContent = item.name;
+                    label.style.cssText = 'flex: 1; font-size: 1.05rem; color: #333;';
+
+                    // Expiry status simulation
+                    const expirySpan = document.createElement('span');
+                    const daysLeft = item.expiryDate ? Math.ceil((new Date(item.expiryDate) - new Date()) / (1000 * 60 * 60 * 24)) : null;
+                    
+                    if (daysLeft !== null && daysLeft > 3) {
+                        expirySpan.textContent = `Expires in ${daysLeft} days`;
+                        expirySpan.style.color = '#28a745';
+                    } else if (daysLeft !== null && daysLeft >= 0) {
+                        expirySpan.textContent = `Expires in ${daysLeft} days`;
+                        expirySpan.style.color = '#ffc107';
+                        itemDiv.style.borderColor = '#ffc107';
+                    } else if (daysLeft !== null) {
+                        expirySpan.textContent = 'Expired';
+                        expirySpan.style.color = '#dc3545';
+                        itemDiv.style.borderColor = '#dc3545';
+                    } else {
+                        expirySpan.textContent = 'No expiry date';
+                        expirySpan.style.color = '#6c757d';
+                    }
+                    expirySpan.style.fontSize = '0.9rem';
+                    expirySpan.style.marginRight = '15px';
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '🗑️';
+                    deleteBtn.style.cssText = 'background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 4px 8px;';
+                    deleteBtn.addEventListener('click', function() {
+                        if (confirm('Remove this item from pantry?')) {
+                            items.splice(index, 1);
+                            localStorage.setItem('pantryItems', JSON.stringify(items));
+                            loadPantryItems();
+                        }
+                    });
+                    
+                    itemDiv.appendChild(label);
+                    itemDiv.appendChild(expirySpan);
+                    itemDiv.appendChild(deleteBtn);
+                    container.appendChild(itemDiv);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
