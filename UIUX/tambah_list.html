@@ -2,20 +2,125 @@
 <html lang="en">
 <head>
     <title>New List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <a href="index.html" style="text-decoration: none;">&larr; Back</a>
-            <h1>New List</h1>
+        <div class="header" style="display: flex; align-items: center; padding-top: 16px;">
+            <a href="index.html" style="text-decoration: none; font-size: 2rem; margin-right: auto;">&#8592;</a>
         </div>
-        <div class="content">
-            <input type="text" placeholder="Nama List Baru" class="input-field">
-            <div style="margin-top:20px;">
-                <a href="detail_list.html" class="button">CREATE</a>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
+            <img src="https://img.icons8.com/emoji/96/000000/strawberry-emoji.png" alt="strawberry" style="width: 64px; height: 64px; margin-bottom: 20px;" />
+            <input type="text" id="list-name-input" placeholder="New list" class="input-field" style="font-size: 2rem; border: 3px solid #37b24d; border-radius: 10px; padding: 12px 16px; width: 90%; max-width: 420px; margin-bottom: 16px; font-weight: bold; color: #444; text-align: left;" />
+            <div style="width: 90%; max-width: 420px; text-align: left; margin-bottom: 8px; font-weight: bold; color: #222;">Popular Categories</div>
+            <div id="suggestions-container" style="width: 90%; max-width: 420px; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
+                <!-- Suggestions will be loaded here -->
             </div>
         </div>
+        <div style="position: fixed; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center;">
+            <button id="create-list-btn" class="button" style="background: #37b24d; color: #fff; border-radius: 24px; font-size: 1.2rem; padding: 16px 0; width: 92%; max-width: 420px; text-align: center; font-weight: bold; letter-spacing: 2px; border: none; cursor: pointer;">CREATE</button>
+        </div>
     </div>
+    <script>
+        document.getElementById('create-list-btn').addEventListener('click', function() {
+            const listName = document.getElementById('list-name-input').value.trim();
+            if (listName) {
+                // Get existing lists
+                const allLists = JSON.parse(localStorage.getItem('allLists') || '[]');
+                
+                // Create new list object
+                const newList = {
+                    name: listName,
+                    items: [],
+                    itemCount: 0,
+                    totalItems: 0,
+                    progress: 0,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Add to lists array
+                allLists.push(newList);
+                localStorage.setItem('allLists', JSON.stringify(allLists));
+                
+                // Set current list
+                localStorage.setItem('currentListName', listName);
+                localStorage.setItem('currentListIndex', allLists.length - 1);
+                localStorage.setItem('listItems', '[]');
+                localStorage.removeItem('isNewList'); // Remove flag
+                
+                window.location.href = 'detail_list.html';
+            } else {
+                alert('Please enter a list name');
+            }
+        });
+
+        // Load suggestions
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSuggestions();
+        });
+
+        function loadSuggestions() {
+            const suggestions = [
+                { name: 'Supermarket', emoji: '🛒', color: '#4CAF50' },
+                { name: 'Shopping', emoji: '🛍️', color: '#2196F3' },
+                { name: 'Groceries', emoji: '🥬', color: '#8BC34A' },
+                { name: 'Breakfast', emoji: '🍳', color: '#FF9800' },
+                { name: 'Lunch', emoji: '🍱', color: '#FF5722' },
+                { name: 'Dinner', emoji: '🍽️', color: '#9C27B0' },
+                { name: 'Snack', emoji: '🍿', color: '#FFC107' },
+                { name: 'Drink', emoji: '🥤', color: '#00BCD4' },
+                { name: 'Party', emoji: '🎉', color: '#E91E63' },
+                { name: 'Birthday', emoji: '🎂', color: '#F44336' },
+                { name: 'Picnic', emoji: '🧺', color: '#795548' },
+                { name: 'Weekend', emoji: '🌴', color: '#009688' },
+                { name: 'Market', emoji: '🏪', color: '#607D8B' }
+            ];
+
+            const container = document.getElementById('suggestions-container');
+            container.innerHTML = '';
+
+            suggestions.forEach(suggestion => {
+                const span = document.createElement('span');
+                span.className = 'suggestion-chip';
+                span.style.cssText = `
+                    background: linear-gradient(135deg, ${suggestion.color}15 0%, ${suggestion.color}25 100%);
+                    border: 2px solid ${suggestion.color}40;
+                    border-radius: 20px;
+                    padding: 8px 16px;
+                    color: #333;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    font-size: 0.95rem;
+                `;
+                span.innerHTML = `<span>${suggestion.emoji}</span><span>${suggestion.name}</span>`;
+                
+                span.addEventListener('click', function() {
+                    document.getElementById('list-name-input').value = suggestion.name;
+                    document.getElementById('list-name-input').focus();
+                });
+                
+                span.addEventListener('mouseenter', function() {
+                    this.style.background = `linear-gradient(135deg, ${suggestion.color}30 0%, ${suggestion.color}50 100%)`;
+                    this.style.borderColor = suggestion.color;
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = `0 4px 8px ${suggestion.color}30`;
+                });
+                
+                span.addEventListener('mouseleave', function() {
+                    this.style.background = `linear-gradient(135deg, ${suggestion.color}15 0%, ${suggestion.color}25 100%)`;
+                    this.style.borderColor = `${suggestion.color}40`;
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+                
+                container.appendChild(span);
+            });
+        }
+    </script>
 </body>
 </html>

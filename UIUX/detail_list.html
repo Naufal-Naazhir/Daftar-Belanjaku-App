@@ -4,37 +4,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supermarket</title>
+    <title>List Detail</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <!-- Tombol kembali sederhana -->
-            <a href="index.html" style="text-decoration: none;">&larr; Back</a>
-            <h1>Supermarket</h1>
+        <div class="header" style="display: flex; align-items: center; justify-content: space-between;">
+            <a href="index.html" style="text-decoration: none; font-size: 1.5rem; color: #333;">&larr;</a>
+            <h1 id="list-title" style="flex: 1; text-align: center; margin: 0;">My List</h1>
+            <span id="menu-btn" style="font-size: 1.5rem; color: #333; cursor: pointer;">⋮</span>
         </div>
-        <div class="content">
-            <!-- Daftar Item -->
-            <div class="item">
-                <input type="checkbox">
-                <label>Beras</label>
-                <span>Rp 60.000</span>
-            </div>
-            <div class="item">
-                <input type="checkbox">
-                <label>Saus Tomat</label>
-                <span>Rp 12.000</span>
-            </div>
-             <!-- Tambahkan item lain sesuai contoh -->
+        <div class="content" id="items-container" style="padding: 20px; min-height: 400px;">
+            <!-- Items will be loaded here -->
         </div>
-        <div class="total-summary">
-            <p>Unchecked: Rp 72.000</p>
-            <p>Checked: Rp 0</p>
-            <p>Total: Rp 72.000</p>
-        </div>
-        <button id="add-item-btn" class="fab">+</button>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Load list name and items from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const listName = localStorage.getItem('currentListName') || 'My List';
+            document.getElementById('list-title').textContent = listName;
+            
+            loadItems();
+        });
+
+        function loadItems() {
+            const items = JSON.parse(localStorage.getItem('listItems') || '[]');
+            const container = document.getElementById('items-container');
+            
+            if (items.length === 0) {
+                // Empty state
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px; color: #ddd;">📝</div>
+                        <h3 style="font-size: 1.2rem; color: #333; margin-bottom: 12px; font-weight: 600;">No items yet</h3>
+                        <p style="font-size: 0.95rem; color: #888; margin-bottom: 32px;">Start adding items to your list</p>
+                        <a href="tambah_item.html" style="display: inline-block; background: #22b14c; color: #fff; border-radius: 28px; font-size: 1.1rem; padding: 16px 40px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 12px rgba(34,177,76,0.2); transition: all 0.2s;">+ ADD ITEM</a>
+                    </div>
+                `;
+            } else {
+                // Display items
+                container.innerHTML = '';
+                items.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = 'display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #eee;';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.checked = item.checked || false;
+                    checkbox.style.cssText = 'width: 22px; height: 22px; margin-right: 14px; cursor: pointer; accent-color: #22b14c;';
+                    checkbox.addEventListener('change', function() {
+                        items[index].checked = this.checked;
+                        localStorage.setItem('listItems', JSON.stringify(items));
+                        updateAllLists(items);
+                        loadItems(); // Reload to update styling
+                    });
+                    
+                    const label = document.createElement('span');
+                    label.textContent = item.name;
+                    label.style.cssText = 'flex: 1; font-size: 1.05rem; color: ' + (item.checked ? '#999' : '#333') + '; text-decoration: ' + (item.checked ? 'line-through' : 'none') + ';';
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '🗑️';
+                    deleteBtn.style.cssText = 'background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 4px 8px;';
+                    deleteBtn.addEventListener('click', function() {
+                        if (confirm('Delete this item?')) {
+                            items.splice(index, 1);
+                            localStorage.setItem('listItems', JSON.stringify(items));
+                            updateAllLists(items);
+                            loadItems();
+                        }
+                    });
+                    
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(label);
+                    itemDiv.appendChild(deleteBtn);
+                    container.appendChild(itemDiv);
+                });
+                
+                // Add summary
+                const total = items.length;
+                const checked = items.filter(i => i.checked).length;
+                const summary = document.createElement('div');
+                summary.style.cssText = 'margin-top: 20px; padding: 16px; background: #f8f9fa; border-radius: 8px; text-align: center;';
+                summary.innerHTML = `<strong>${checked}/${total}</strong> items completed`;
+                container.appendChild(summary);
+                
+                // Add button at bottom
+                const addBtn = document.createElement('a');
+                addBtn.href = 'tambah_item.html';
+                addBtn.style.cssText = 'display: block; margin: 24px auto 0; background: #22b14c; color: #fff; border-radius: 28px; font-size: 1.1rem; padding: 16px 40px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 12px rgba(34,177,76,0.2); text-align: center; max-width: 200px;';
+                addBtn.textContent = '+ ADD ITEM';
+                container.appendChild(addBtn);
+            }
+        }
+
+        function updateAllLists(items) {
+            const listIndex = parseInt(localStorage.getItem('currentListIndex'));
+            const allLists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            
+            if (allLists[listIndex] !== undefined) {
+                allLists[listIndex].items = items;
+                allLists[listIndex].totalItems = items.length;
+                allLists[listIndex].itemCount = items.filter(item => item.checked).length;
+                const progress = items.length > 0 ? Math.round((items.filter(item => item.checked).length / items.length) * 100) : 0;
+                allLists[listIndex].progress = progress;
+                localStorage.setItem('allLists', JSON.stringify(allLists));
+            }
+        }
+    </script>
 </body>
 </html>

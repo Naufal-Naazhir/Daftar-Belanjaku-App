@@ -16,46 +16,143 @@
         </div>
         <div class="content">
             <div class="search-bar-container">
-                <input type="text" placeholder="Add new item..." class="input-field">
+                <input type="text" id="item-input" placeholder="Add new item..." class="input-field" style="font-size: 1.1rem; padding: 14px; border: 2px solid #22b14c; border-radius: 8px; width: 100%; box-sizing: border-box;">
+                <button id="add-btn" style="margin-top: 16px; width: 100%; background: #22b14c; color: #fff; border: none; border-radius: 8px; padding: 14px; font-size: 1.1rem; font-weight: bold; cursor: pointer;">ADD TO LIST</button>
             </div>
 
             <!-- Daftar Saran Item -->
-            <div class="suggestion-list">
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Susu</span>
-                </div>
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Telur</span>
-                </div>
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Mentega</span>
-                </div>
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Keju</span>
-                </div>
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Tisu toilet</span>
-                </div>
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Ayam</span>
-                </div>
-                <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Kentang</span>
-                </div>
-                 <div class="suggestion-item">
-                    <span class="add-icon">+</span>
-                    <span>Pasta gigi</span>
-                </div>
+            <h3 id="suggestion-title" style="font-size: 1rem; color: #666; margin: 24px 0 12px 0;">Quick Add</h3>
+            <div id="suggestion-list" class="suggestion-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                <!-- Suggestions will be loaded here -->
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Load recommendations based on list name
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecommendations();
+        });
+
+        function loadRecommendations() {
+            const listName = (localStorage.getItem('currentListName') || 'Shopping').toLowerCase();
+            const suggestions = getRecommendations(listName);
+            
+            // Update title
+            const titleElement = document.getElementById('suggestion-title');
+            titleElement.textContent = `Recommended for "${localStorage.getItem('currentListName') || 'Shopping'}":`;
+            
+            // Display suggestions
+            const container = document.getElementById('suggestion-list');
+            container.innerHTML = '';
+            
+            suggestions.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.style.cssText = 'background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;';
+                div.innerHTML = `
+                    <span style="color: #22b14c; font-size: 1.3rem;">+</span>
+                    <span>${item}</span>
+                `;
+                div.addEventListener('click', function() {
+                    addItemQuick(item);
+                });
+                div.addEventListener('mouseenter', function() {
+                    this.style.background = '#e8f5e9';
+                    this.style.borderColor = '#22b14c';
+                });
+                div.addEventListener('mouseleave', function() {
+                    this.style.background = '#f8f9fa';
+                    this.style.borderColor = '#ddd';
+                });
+                container.appendChild(div);
+            });
+        }
+
+        function getRecommendations(listName) {
+            // Database rekomendasi berdasarkan kategori
+            const recommendations = {
+                'supermarket': ['Beras 5kg', 'Minyak Goreng 2L', 'Gula Pasir 1kg', 'Telur 1kg', 'Susu UHT', 'Roti Tawar', 'Sabun Mandi', 'Deterjen', 'Shampo', 'Pasta Gigi'],
+                'shopping': ['Beras', 'Minyak Goreng', 'Gula', 'Telur', 'Susu', 'Roti', 'Sabun', 'Shampo', 'Tisu', 'Pasta Gigi'],
+                'groceries': ['Sayur Bayam', 'Wortel', 'Kentang', 'Bawang Merah', 'Bawang Putih', 'Cabai', 'Tomat', 'Daging Ayam', 'Ikan', 'Tempe'],
+                'market': ['Ikan Segar', 'Sayur Kangkung', 'Tempe', 'Tahu', 'Cabai Rawit', 'Jahe', 'Kunyit', 'Lengkuas', 'Daun Salam', 'Serai'],
+                'breakfast': ['Roti', 'Selai', 'Mentega', 'Susu', 'Sereal', 'Telur', 'Keju', 'Yogurt', 'Oatmeal', 'Madu'],
+                'lunch': ['Nasi', 'Ayam', 'Sayur', 'Sambal', 'Lauk Pauk', 'Tempe', 'Tahu', 'Ikan', 'Sop', 'Kerupuk'],
+                'dinner': ['Nasi', 'Lauk', 'Sayur', 'Buah', 'Sup', 'Salad', 'Protein', 'Karbohidrat', 'Minuman', 'Dessert'],
+                'snack': ['Keripik', 'Coklat', 'Biskuit', 'Permen', 'Kacang', 'Wafer', 'Cookies', 'Popcorn', 'Es Krim', 'Jelly'],
+                'drink': ['Air Mineral', 'Teh', 'Kopi', 'Jus', 'Soda', 'Susu', 'Sirup', 'Minuman Energi', 'Yogurt Drink', 'Smoothie'],
+                'party': ['Kue', 'Minuman', 'Snack', 'Piring Kertas', 'Gelas Plastik', 'Balon', 'Dekorasi', 'Es Batu', 'Serbet', 'Lilin'],
+                'birthday': ['Kue Ulang Tahun', 'Lilin', 'Balon', 'Piring', 'Minuman', 'Snack', 'Hadiah', 'Dekorasi', 'Topi Pesta', 'Confetti'],
+                'picnic': ['Nasi Kotak', 'Air Mineral', 'Buah', 'Snack', 'Tikar', 'Tisu', 'Kantong Sampah', 'Sunblock', 'Payung', 'Cooler Box'],
+                'weekend': ['Cemilan', 'Minuman', 'Buah', 'Sayur Fresh', 'Daging', 'Bumbu Dapur', 'Snack', 'Dessert', 'Es Krim', 'Pizza'],
+                'default': ['Beras', 'Minyak', 'Gula', 'Telur', 'Sayur', 'Buah', 'Daging', 'Ikan', 'Susu', 'Roti']
+            };
+
+            // Cari kategori yang cocok
+            for (let key in recommendations) {
+                if (listName.includes(key)) {
+                    return recommendations[key];
+                }
+            }
+            
+            return recommendations['default'];
+        }
+
+        document.getElementById('add-btn').addEventListener('click', function() {
+            const itemName = document.getElementById('item-input').value.trim();
+            if (itemName) {
+                addItem(itemName);
+            } else {
+                alert('Please enter item name');
+            }
+        });
+
+        document.getElementById('item-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const itemName = this.value.trim();
+                if (itemName) {
+                    addItem(itemName);
+                }
+            }
+        });
+
+        function addItem(itemName) {
+            // Get existing items
+            const items = JSON.parse(localStorage.getItem('listItems') || '[]');
+            
+            // Add new item
+            items.push({
+                name: itemName,
+                checked: false,
+                addedAt: new Date().toISOString()
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('listItems', JSON.stringify(items));
+            
+            // Update in allLists
+            updateAllLists(items);
+            
+            // Redirect back to detail
+            window.location.href = 'detail_list.html';
+        }
+
+        function addItemQuick(itemName) {
+            addItem(itemName);
+        }
+
+        function updateAllLists(items) {
+            const listIndex = parseInt(localStorage.getItem('currentListIndex'));
+            const allLists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            
+            if (allLists[listIndex] !== undefined) {
+                allLists[listIndex].items = items;
+                allLists[listIndex].totalItems = items.length;
+                allLists[listIndex].itemCount = items.filter(item => item.checked).length;
+                const progress = items.length > 0 ? Math.round((items.filter(item => item.checked).length / items.length) * 100) : 0;
+                allLists[listIndex].progress = progress;
+                localStorage.setItem('allLists', JSON.stringify(allLists));
+            }
+        }
+    </script>
 </body>
 </html>

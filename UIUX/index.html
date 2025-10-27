@@ -7,36 +7,125 @@
     <title>My Lists</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<div class="bottom-nav">
-    <a href="index.html" class="nav-item active">
-        <span>Lists</span>
-    </a>
-    <a href="pengaturan.html" class="nav-item">
-        <span>Pengaturan</span>
-    </a>
-</div>
 <body>
     <div class="container">
         <div class="header">
             <h1>My Lists</h1>
         </div>
-        <div class="content">
-            <!-- Contoh Card Daftar Belanja -->
-            <a href="detail_list.html" style="text-decoration: none; color: inherit;">
-                <div class="card">
-                    <h2>Shopping</h2>
-                    <p>0/0</p>
-                </div>
-            </a>
-            <a href="detail_list.html" style="text-decoration: none; color: inherit;">
-                <div class="card">
-                    <h2>Supermarket</h2>
-                    <p>0/6</p>
-                </div>
-            </a>
+        <div class="content" id="lists-container" style="padding: 20px; padding-bottom: 100px;">
+            <!-- Daftar list akan muncul di sini -->
+            <div id="empty-state" style="text-align: center; color: #888; padding: 80px 20px;">
+                <p style="font-size: 1.2rem; margin-bottom: 12px;">No lists yet</p>
+                <p style="font-size: 0.95rem;">Tap NEW LIST button to create your first list</p>
+            </div>
         </div>
-        <button id="add-list-btn" class="fab">+</button>
+        <a href="tambah_list.html" id="add-list-btn" class="fab">NEW LIST</a>
     </div>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Lists</span>
+        </a>
+        <a href="food_facts.html" class="nav-item">
+            <span class="nav-icon">🍎</span>
+            <span class="nav-label">Food facts</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profile</span>
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllLists();
+        });
+
+        function loadAllLists() {
+            const lists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            const container = document.getElementById('lists-container');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (lists.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                container.innerHTML = '';
+                
+                lists.forEach((list, index) => {
+                    const listCard = createListCard(list, index);
+                    container.appendChild(listCard);
+                });
+            }
+        }
+
+        function createListCard(list, index) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.cssText = 'background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s;';
+            
+            card.innerHTML = `
+                <div class="card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                    <h2 style="margin: 0; font-size: 1.3rem; flex: 1;">${list.name}</h2>
+                    <span class="item-count" style="color: #666; font-size: 1rem; margin-right: 12px;">${list.itemCount || 0}/${list.totalItems || 0}</span>
+                    <span class="menu" style="font-size: 1.5rem; color: #888; cursor: pointer;" onclick="event.stopPropagation(); showListMenu(${index})">⋮</span>
+                </div>
+                <div class="progress-bar-container" style="margin-top: 12px; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden;">
+                    <div class="progress-bar" style="width: ${list.progress || 0}%; height: 100%; background: #22b14c; transition: width 0.3s;"></div>
+                </div>
+            `;
+            
+            card.addEventListener('click', function() {
+                openList(index);
+            });
+            
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = 'none';
+                this.style.transform = 'translateY(0)';
+            });
+            
+            return card;
+        }
+
+        function openList(index) {
+            const lists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            if (lists[index]) {
+                localStorage.setItem('currentListName', lists[index].name);
+                localStorage.setItem('currentListIndex', index);
+                localStorage.setItem('listItems', JSON.stringify(lists[index].items || []));
+                window.location.href = 'detail_list.html';
+            }
+        }
+
+        function showListMenu(index) {
+            const lists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            const list = lists[index];
+            
+            const action = confirm(`List: "${list.name}"\n\nChoose action:\nOK = Edit name\nCancel = Delete list`);
+            
+            if (action) {
+                // Edit
+                const newName = prompt('Enter new list name:', list.name);
+                if (newName && newName.trim()) {
+                    lists[index].name = newName.trim();
+                    localStorage.setItem('allLists', JSON.stringify(lists));
+                    loadAllLists();
+                }
+            } else {
+                // Delete
+                const confirmDelete = confirm(`Are you sure you want to delete "${list.name}"?`);
+                if (confirmDelete) {
+                    lists.splice(index, 1);
+                    localStorage.setItem('allLists', JSON.stringify(lists));
+                    loadAllLists();
+                }
+            }
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
