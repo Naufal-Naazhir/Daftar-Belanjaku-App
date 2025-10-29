@@ -6,52 +6,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Lists</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <script src="theme-handler.js"></script>
+    <script src="user-data-helper.js"></script>
+    <script src="premium-system.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>My Lists</h1>
         </div>
-        <div class="content" id="lists-container" style="padding: 20px; padding-bottom: 100px;">
+        <div class="content" id="lists-container" style="padding: 20px;">
             <!-- Daftar list akan muncul di sini -->
             <div id="empty-state" style="text-align: center; color: #888; padding: 80px 20px;">
                 <p style="font-size: 1.2rem; margin-bottom: 12px;">No lists yet</p>
                 <p style="font-size: 0.95rem;">Tap NEW LIST button to create your first list</p>
             </div>
         </div>
-        <a href="tambah_list.html" id="add-list-btn" class="fab">NEW LIST</a>
+        
     </div>
+    
+    <!-- Floating NEW LIST Button -->
+    <a href="tambah_list.html" class="fab" style="position: fixed; right: 20px; bottom: 80px; background: #22b14c; color: #fff; border-radius: 28px; padding: 14px 24px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1rem; font-weight: bold; box-shadow: 0 4px 12px rgba(34,177,76,0.4); z-index: 100; gap: 6px;">
+        <span style="font-size: 1.3rem;">NEW LIST</span> 
+    </a>
+    
     <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="index.html" class="nav-item active">
+    <div class="bottom-nav" style="z-index: 9999 !important;">
+        <a href="index.html" class="nav-item active" style="pointer-events: auto !important; cursor: pointer !important;">
             <span class="nav-icon">📋</span>
             <span class="nav-label">Lists</span>
         </a>
-        <a href="pantry.html" class="nav-item">
-            <span class="nav-icon">📦</span>
-            <span class="nav-label">Pantry</span>
+        <a href="food_facts.html" class="nav-item" style="pointer-events: auto !important; cursor: pointer !important;">
+            <span class="nav-icon">🍎</span>
+            <span class="nav-label">Food facts</span>
         </a>
-        <a href="pengaturan.html" class="nav-item">
-            <span class="nav-icon">⚙️</span>
-            <span class="nav-label">Settings</span>
+        <a href="profile.html" class="nav-item" style="pointer-events: auto !important; cursor: pointer !important;">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profile</span>
         </a>
     </div>
+    
+    <!-- Custom Menu Modal -->
+    <div id="menu-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+        <div id="menu-content" style="position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div style="width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 24px;"></div>
+            <h3 id="menu-list-name" style="margin: 0 0 20px 0; font-size: 1.3rem; color: #333; text-align: center;">List Options</h3>
+            <button id="edit-list-btn" style="width: 100%; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: #fff; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(33,150,243,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 1.2rem;">✏️</span> Edit Name
+            </button>
+            <button id="delete-list-btn" style="width: 100%; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: #fff; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(255,107,107,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 1.2rem;">🗑️</span> Delete List
+            </button>
+            <button id="cancel-menu-btn" style="width: 100%; padding: 16px; background: #f5f5f5; color: #666; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 600; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+    
+    <!-- Custom Delete Confirmation Modal -->
+    <div id="delete-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1001; backdrop-filter: blur(4px);">
+        <div id="delete-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: #fff; border-radius: 20px; padding: 24px; width: 85%; max-width: 320px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 2rem; box-shadow: 0 4px 12px rgba(255,107,107,0.3);">🗑️</div>
+                <h3 style="margin: 0 0 8px 0; font-size: 1.3rem; color: #333;">Delete List?</h3>
+                <p id="delete-list-name" style="margin: 0; color: #666; font-size: 0.95rem;">Are you sure you want to delete this list?</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button id="cancel-delete-btn" style="flex: 1; padding: 14px; border: 2px solid #ddd; background: #fff; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Cancel</button>
+                <button id="confirm-delete-btn" style="flex: 1; padding: 14px; border: none; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: #fff; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(255,107,107,0.3); transition: all 0.2s;">Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Edit Modal -->
+    <div id="edit-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1001; backdrop-filter: blur(4px);">
+        <div id="edit-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: #fff; border-radius: 20px; padding: 24px; width: 85%; max-width: 320px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); opacity: 0; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 2rem; box-shadow: 0 4px 12px rgba(33,150,243,0.3);">✏️</div>
+                <h3 style="margin: 0 0 16px 0; font-size: 1.3rem; color: #333;">Edit List Name</h3>
+                <input type="text" id="edit-list-input" style="width: 100%; padding: 14px; border: 2px solid #2196F3; border-radius: 10px; font-size: 1rem; box-sizing: border-box;" placeholder="Enter new name">
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button id="cancel-edit-btn" style="flex: 1; padding: 14px; border: 2px solid #ddd; background: #fff; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Cancel</button>
+                <button id="confirm-edit-btn" style="flex: 1; padding: 14px; border: none; background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: #fff; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(33,150,243,0.3); transition: all 0.2s;">Save</button>
+            </div>
+        </div>
+    </div>
     <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
+        // Redirect admin to admin panel
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser === 'admin') {
+            window.location.href = 'admin.html';
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadAllLists();
+            checkNewListButton();
         });
+        
+        // Check if NEW LIST button should be shown
+        function checkNewListButton() {
+            const newListBtn = document.querySelector('.fab');
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
+            
+            if (!isPremiumUser() && lists.length >= 3) {
+                // Hide button for free users who reached limit
+                if (newListBtn) {
+                    newListBtn.style.display = 'none';
+                }
+                
+                // Show upgrade message
+                const container = document.getElementById('lists-container');
+                let upgradeMsg = document.getElementById('upgrade-message');
+                if (!upgradeMsg) {
+                    upgradeMsg = document.createElement('div');
+                    upgradeMsg.id = 'upgrade-message';
+                    upgradeMsg.style.cssText = 'margin: 20px; padding: 20px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: 16px; text-align: center; box-shadow: 0 4px 12px rgba(255,165,0,0.3);';
+                    upgradeMsg.innerHTML = `
+                        <div style="font-size: 2rem; margin-bottom: 12px;">💎</div>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: #000; margin-bottom: 8px;">Free Limit Reached</div>
+                        <div style="font-size: 0.9rem; color: #333; margin-bottom: 16px;">You've reached the maximum of 3 lists for free accounts</div>
+                        <button onclick="showUpgradeModal()" style="background: #000; color: #FFD700; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem;">
+                            ⚡ Upgrade to Premium
+                        </button>
+                    `;
+                    container.appendChild(upgradeMsg);
+                }
+            } else {
+                // Show button
+                if (newListBtn) {
+                    newListBtn.style.display = 'flex';
+                }
+                // Remove upgrade message if exists
+                const upgradeMsg = document.getElementById('upgrade-message');
+                if (upgradeMsg) upgradeMsg.remove();
+            }
+        }
+
+        function getUserListsKey() {
+            const currentUser = localStorage.getItem('currentUser');
+            return `allLists_${currentUser}`;
+        }
 
         function loadAllLists() {
-            const lists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
             const container = document.getElementById('lists-container');
-            const emptyState = document.getElementById('empty-state');
+            
+            // Clear container
+            container.innerHTML = '';
             
             if (lists.length === 0) {
-                emptyState.style.display = 'block';
+                // Show empty state
+                container.innerHTML = `
+                    <div id="empty-state" style="text-align: center; color: #888; padding: 80px 20px;">
+                        <p style="font-size: 1.2rem; margin-bottom: 12px;">No lists yet</p>
+                        <p style="font-size: 0.95rem;">Tap NEW LIST button to create your first list</p>
+                    </div>
+                `;
             } else {
-                emptyState.style.display = 'none';
-                container.innerHTML = '';
-                
+                // Show lists
                 lists.forEach((list, index) => {
                     const listCard = createListCard(list, index);
                     container.appendChild(listCard);
@@ -93,39 +212,154 @@
         }
 
         function openList(index) {
-            const lists = JSON.parse(localStorage.getItem('allLists') || '[]');
-            if (lists[index]) {
-                localStorage.setItem('currentListName', lists[index].name);
-                localStorage.setItem('currentListIndex', index);
-                localStorage.setItem('listItems', JSON.stringify(lists[index].items || []));
-                window.location.href = 'detail_list.html';
-            }
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
+            const selected = lists[index];
+            if (!selected) return;
+            localStorage.setItem('currentListName', selected.name);
+            localStorage.setItem('currentListIndex', index);
+            localStorage.setItem('listItems', JSON.stringify(selected.items || []));
+            window.location.href = 'detail_list.html';
         }
 
+        let currentListIndex = null;
+        
         function showListMenu(index) {
-            const lists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            currentListIndex = index;
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
             const list = lists[index];
+            if (!list) return;
             
-            const action = confirm(`List: "${list.name}"\n\nChoose action:\nOK = Edit name\nCancel = Delete list`);
+            document.getElementById('menu-list-name').textContent = list.name;
             
-            if (action) {
-                // Edit
-                const newName = prompt('Enter new list name:', list.name);
-                if (newName && newName.trim()) {
-                    lists[index].name = newName.trim();
-                    localStorage.setItem('allLists', JSON.stringify(lists));
-                    loadAllLists();
-                }
-            } else {
-                // Delete
-                const confirmDelete = confirm(`Are you sure you want to delete "${list.name}"?`);
-                if (confirmDelete) {
-                    lists.splice(index, 1);
-                    localStorage.setItem('allLists', JSON.stringify(lists));
-                    loadAllLists();
-                }
-            }
+            const modal = document.getElementById('menu-modal');
+            const content = document.getElementById('menu-content');
+            
+            modal.style.display = 'block';
+            setTimeout(() => {
+                content.style.transform = 'translateY(0)';
+            }, 10);
         }
+        
+        function hideMenuModal() {
+            const modal = document.getElementById('menu-modal');
+            const content = document.getElementById('menu-content');
+            
+            content.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        function showEditModal() {
+            hideMenuModal();
+            
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
+            const list = lists[currentListIndex];
+            if (!list) return;
+            
+            document.getElementById('edit-list-input').value = list.name;
+            
+            const modal = document.getElementById('edit-modal');
+            const content = document.getElementById('edit-content');
+            
+            modal.style.display = 'block';
+            setTimeout(() => {
+                content.style.opacity = '1';
+                content.style.transform = 'translate(-50%, -50%) scale(1)';
+                document.getElementById('edit-list-input').focus();
+            }, 10);
+        }
+        
+        function hideEditModal() {
+            const modal = document.getElementById('edit-modal');
+            const content = document.getElementById('edit-content');
+            
+            content.style.opacity = '0';
+            content.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        function showDeleteModal() {
+            hideMenuModal();
+            
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
+            const list = lists[currentListIndex];
+            if (!list) return;
+            
+            document.getElementById('delete-list-name').innerHTML = `Are you sure you want to delete <strong style="color: #333;">${list.name}</strong>?`;
+            
+            const modal = document.getElementById('delete-modal');
+            const content = document.getElementById('delete-content');
+            
+            modal.style.display = 'block';
+            setTimeout(() => {
+                content.style.opacity = '1';
+                content.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 10);
+        }
+        
+        function hideDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            const content = document.getElementById('delete-content');
+            
+            content.style.opacity = '0';
+            content.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        // Menu modal events
+        document.getElementById('edit-list-btn').addEventListener('click', showEditModal);
+        document.getElementById('delete-list-btn').addEventListener('click', showDeleteModal);
+        document.getElementById('cancel-menu-btn').addEventListener('click', hideMenuModal);
+        document.getElementById('menu-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideMenuModal();
+        });
+        
+        // Edit modal events
+        document.getElementById('confirm-edit-btn').addEventListener('click', function() {
+            const newName = document.getElementById('edit-list-input').value.trim();
+            if (newName) {
+                const listsKey = getUserListsKey();
+                const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
+                lists[currentListIndex].name = newName;
+                localStorage.setItem(listsKey, JSON.stringify(lists));
+                hideEditModal();
+                loadAllLists();
+            }
+        });
+        document.getElementById('cancel-edit-btn').addEventListener('click', hideEditModal);
+        document.getElementById('edit-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideEditModal();
+        });
+        
+        // Delete modal events
+        document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+            const listsKey = getUserListsKey();
+            const lists = JSON.parse(localStorage.getItem(listsKey) || '[]');
+            lists.splice(currentListIndex, 1);
+            localStorage.setItem(listsKey, JSON.stringify(lists));
+            hideDeleteModal();
+            loadAllLists();
+        });
+        document.getElementById('cancel-delete-btn').addEventListener('click', hideDeleteModal);
+        document.getElementById('delete-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideDeleteModal();
+        });
+        
+        // Enter key for edit
+        document.getElementById('edit-list-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('confirm-edit-btn').click();
+            }
+        });
     </script>
     <script src="script.js"></script>
 </body>

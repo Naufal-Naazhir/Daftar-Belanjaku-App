@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Facts</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <script src="theme-handler.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Food Facts</h1>
+        </div>
+        <div class="content" style="padding: 20px; padding-bottom: 100px;">
+            <!-- Search Bar -->
+            <div style="margin-bottom: 24px;">
+                <input type="text" id="search-input" placeholder="Search food facts..." style="width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+            </div>
+
+            <!-- Food Facts Cards -->
+            <div id="food-facts-container">
+                <!-- Food fact cards will be displayed here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Lists</span>
+        </a>
+        <a href="food_facts.html" class="nav-item active">
+            <span class="nav-icon">🍎</span>
+            <span class="nav-label">Food facts</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profile</span>
+        </a>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
+        // Redirect admin to admin panel
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser === 'admin') {
+            window.location.href = 'admin.html';
+        }
+        
+        // Food facts database
+        const foodFacts = [
+            {
+                name: 'Apple',
+                emoji: '🍎',
+                calories: '52 kcal',
+                protein: '0.3g',
+                carbs: '14g',
+                fat: '0.2g',
+                benefits: 'Rich in fiber and vitamin C. Good for heart health.'
+            },
+            {
+                name: 'Banana',
+                emoji: '🍌',
+                calories: '89 kcal',
+                protein: '1.1g',
+                carbs: '23g',
+                fat: '0.3g',
+                benefits: 'High in potassium. Great for energy and muscle function.'
+            },
+            {
+                name: 'Egg',
+                emoji: '🥚',
+                calories: '155 kcal',
+                protein: '13g',
+                carbs: '1.1g',
+                fat: '11g',
+                benefits: 'Excellent source of protein and essential amino acids.'
+            },
+            {
+                name: 'Milk',
+                emoji: '🥛',
+                calories: '42 kcal',
+                protein: '3.4g',
+                carbs: '5g',
+                fat: '1g',
+                benefits: 'Rich in calcium and vitamin D. Strengthens bones.'
+            },
+            {
+                name: 'Chicken Breast',
+                emoji: '🍗',
+                calories: '165 kcal',
+                protein: '31g',
+                carbs: '0g',
+                fat: '3.6g',
+                benefits: 'High protein, low fat. Great for muscle building.'
+            },
+            {
+                name: 'Rice',
+                emoji: '🍚',
+                calories: '130 kcal',
+                protein: '2.7g',
+                carbs: '28g',
+                fat: '0.3g',
+                benefits: 'Good source of energy. Provides essential carbohydrates.'
+            },
+            {
+                name: 'Broccoli',
+                emoji: '🥦',
+                calories: '34 kcal',
+                protein: '2.8g',
+                carbs: '7g',
+                fat: '0.4g',
+                benefits: 'Rich in vitamins K and C. Supports immune system.'
+            },
+            {
+                name: 'Salmon',
+                emoji: '🐟',
+                calories: '208 kcal',
+                protein: '20g',
+                carbs: '0g',
+                fat: '13g',
+                benefits: 'High in omega-3 fatty acids. Good for brain health.'
+            },
+            {
+                name: 'Avocado',
+                emoji: '🥑',
+                calories: '160 kcal',
+                protein: '2g',
+                carbs: '9g',
+                fat: '15g',
+                benefits: 'Healthy fats. Good for heart and skin health.'
+            },
+            {
+                name: 'Tomato',
+                emoji: '🍅',
+                calories: '18 kcal',
+                protein: '0.9g',
+                carbs: '3.9g',
+                fat: '0.2g',
+                benefits: 'Rich in lycopene and vitamin C. Antioxidant properties.'
+            },
+            {
+                name: 'Carrot',
+                emoji: '🥕',
+                calories: '41 kcal',
+                protein: '0.9g',
+                carbs: '10g',
+                fat: '0.2g',
+                benefits: 'High in beta-carotene. Good for eye health.'
+            },
+            {
+                name: 'Potato',
+                emoji: '🥔',
+                calories: '77 kcal',
+                protein: '2g',
+                carbs: '17g',
+                fat: '0.1g',
+                benefits: 'Good source of potassium and vitamin B6.'
+            }
+        ];
+
+        // Display all food facts on load
+        document.addEventListener('DOMContentLoaded', function() {
+            displayFoodFacts(foodFacts);
+            
+            // Search functionality
+            document.getElementById('search-input').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = foodFacts.filter(food => 
+                    food.name.toLowerCase().includes(searchTerm)
+                );
+                displayFoodFacts(filtered);
+            });
+        });
+
+        function displayFoodFacts(facts) {
+            const container = document.getElementById('food-facts-container');
+            
+            if (facts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: #888;">
+                        <p style="font-size: 1.1rem;">No food facts found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            facts.forEach(food => {
+                const card = document.createElement('div');
+                card.style.cssText = 'background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);';
+                
+                card.innerHTML = `
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <div style="font-size: 2.5rem; margin-right: 16px;">${food.emoji}</div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0 0 4px 0; font-size: 1.3rem; color: #333;">${food.name}</h3>
+                            <p style="margin: 0; color: #666; font-size: 0.95rem;">${food.calories} per 100g</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.85rem; color: #666;">Protein</div>
+                            <div style="font-weight: bold; color: #22b14c; font-size: 1rem;">${food.protein}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.85rem; color: #666;">Carbs</div>
+                            <div style="font-weight: bold; color: #ff9800; font-size: 1rem;">${food.carbs}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.85rem; color: #666;">Fat</div>
+                            <div style="font-weight: bold; color: #f44336; font-size: 1rem;">${food.fat}</div>
+                        </div>
+                    </div>
+                    <div style="padding: 12px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #22b14c;">
+                        <p style="margin: 0; font-size: 0.9rem; color: #333; line-height: 1.5;">💡 ${food.benefits}</p>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

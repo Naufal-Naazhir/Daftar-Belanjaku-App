@@ -4,6 +4,10 @@
     <title>New List</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <script src="theme-handler.js"></script>
+    <script src="user-data-helper.js"></script>
+    <script src="premium-system.js"></script>
 </head>
 <body>
     <div class="container">
@@ -23,11 +27,23 @@
         </div>
     </div>
     <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
         document.getElementById('create-list-btn').addEventListener('click', function() {
             const listName = document.getElementById('list-name-input').value.trim();
             if (listName) {
-                // Get existing lists
-                const allLists = JSON.parse(localStorage.getItem('allLists') || '[]');
+                // Check if user can create list
+                const canCreate = canCreateList();
+                if (!canCreate.allowed) {
+                    alert(canCreate.message);
+                    return;
+                }
+                
+                // Get existing lists for current user
+                const allLists = getUserLists();
                 
                 // Create new list object
                 const newList = {
@@ -41,7 +57,7 @@
                 
                 // Add to lists array
                 allLists.push(newList);
-                localStorage.setItem('allLists', JSON.stringify(allLists));
+                saveUserLists(allLists);
                 
                 // Set current list
                 localStorage.setItem('currentListName', listName);

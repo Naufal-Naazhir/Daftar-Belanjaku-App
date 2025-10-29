@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Item</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <script src="theme-handler.js"></script>
+    <script src="user-data-helper.js"></script>
+    <script src="premium-system.js"></script>
 </head>
 <body>
     <div class="container">
@@ -28,6 +32,11 @@
         </div>
     </div>
     <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
         // Load recommendations based on list name
         document.addEventListener('DOMContentLoaded', function() {
             loadRecommendations();
@@ -119,9 +128,18 @@
             // Get existing items
             const items = JSON.parse(localStorage.getItem('listItems') || '[]');
             
-            // Add new item
+            // Check if user can add more items
+            const listIndex = parseInt(localStorage.getItem('currentListIndex'));
+            const canAdd = canAddItem(listIndex);
+            if (!canAdd.allowed) {
+                alert(canAdd.message);
+                return;
+            }
+            
+            // Add new item with price
             items.push({
                 name: itemName,
+                price: getItemPrice(itemName),
                 checked: false,
                 addedAt: new Date().toISOString()
             });
@@ -135,6 +153,36 @@
             // Redirect back to detail
             window.location.href = 'detail_list.html';
         }
+        
+        function getItemPrice(itemName) {
+            const priceDatabase = {
+                'beras 5kg': 65000, 'beras': 13000, 'minyak goreng 2l': 32000, 'minyak goreng': 16000, 'minyak': 16000,
+                'gula pasir 1kg': 15000, 'gula pasir': 15000, 'gula': 15000, 'telur 1kg': 28000, 'telur': 28000,
+                'susu uht': 12000, 'susu': 12000, 'roti tawar': 14000, 'roti': 10000, 'sabun mandi': 8000, 'sabun': 5000,
+                'deterjen': 18000, 'shampo': 15000, 'pasta gigi': 12000, 'tisu': 8000, 'sayur bayam': 5000, 'bayam': 5000,
+                'wortel': 8000, 'kentang': 12000, 'bawang merah': 35000, 'bawang putih': 40000, 'cabai': 25000, 'cabe': 25000,
+                'tomat': 10000, 'daging ayam': 35000, 'ayam': 35000, 'ikan': 40000, 'ikan segar': 45000, 'tempe': 8000, 'tahu': 6000,
+                'sayur kangkung': 4000, 'kangkung': 4000, 'cabai rawit': 30000, 'jahe': 15000, 'kunyit': 12000, 'lengkuas': 10000,
+                'daun salam': 5000, 'serai': 3000, 'selai': 18000, 'mentega': 22000, 'sereal': 35000, 'keju': 45000, 'yogurt': 15000,
+                'oatmeal': 28000, 'madu': 40000, 'nasi': 5000, 'sambal': 8000, 'lauk pauk': 20000, 'lauk': 20000, 'sop': 15000,
+                'sup': 15000, 'kerupuk': 5000, 'sayur': 8000, 'buah': 15000, 'salad': 20000, 'protein': 35000, 'karbohidrat': 10000,
+                'minuman': 8000, 'dessert': 25000, 'keripik': 10000, 'coklat': 15000, 'biskuit': 12000, 'permen': 5000, 'kacang': 15000,
+                'wafer': 8000, 'cookies': 20000, 'popcorn': 12000, 'es krim': 18000, 'jelly': 8000, 'air mineral': 5000, 'teh': 8000,
+                'kopi': 12000, 'jus': 15000, 'soda': 8000, 'sirup': 18000, 'minuman energi': 10000, 'yogurt drink': 12000,
+                'smoothie': 25000, 'kue': 50000, 'snack': 15000, 'piring kertas': 10000, 'gelas plastik': 8000, 'balon': 15000,
+                'dekorasi': 30000, 'es batu': 5000, 'serbet': 8000, 'lilin': 10000, 'kue ulang tahun': 150000, 'hadiah': 100000,
+                'topi pesta': 15000, 'confetti': 12000, 'nasi kotak': 25000, 'tikar': 50000, 'kantong sampah': 8000, 'sunblock': 45000,
+                'payung': 75000, 'cooler box': 150000, 'cemilan': 15000, 'sayur fresh': 10000, 'daging': 50000, 'bumbu dapur': 20000,
+                'pizza': 85000
+            };
+            
+            const itemLower = itemName.toLowerCase();
+            if (priceDatabase[itemLower]) return 'Rp ' + priceDatabase[itemLower].toLocaleString('id-ID');
+            for (let key in priceDatabase) {
+                if (itemLower.includes(key) || key.includes(itemLower)) return 'Rp ' + priceDatabase[key].toLocaleString('id-ID');
+            }
+            return 'Rp 10.000';
+        }
 
         function addItemQuick(itemName) {
             addItem(itemName);
@@ -142,7 +190,7 @@
 
         function updateAllLists(items) {
             const listIndex = parseInt(localStorage.getItem('currentListIndex'));
-            const allLists = JSON.parse(localStorage.getItem('allLists') || '[]');
+            const allLists = getUserLists();
             
             if (allLists[listIndex] !== undefined) {
                 allLists[listIndex].items = items;
@@ -150,7 +198,7 @@
                 allLists[listIndex].itemCount = items.filter(item => item.checked).length;
                 const progress = items.length > 0 ? Math.round((items.filter(item => item.checked).length / items.length) * 100) : 0;
                 allLists[listIndex].progress = progress;
-                localStorage.setItem('allLists', JSON.stringify(allLists));
+                saveUserLists(allLists);
             }
         }
     </script>

@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <script src="theme-handler.js"></script>
+    <script src="user-data-helper.js"></script>
+    <script src="premium-system.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Greeting -->
+        <div style="padding: 24px 20px; background: linear-gradient(135deg, #22b14c 0%, #1a8f3d 100%);">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <h1 style="margin: 0; color: #fff; font-size: 2rem;">Hello! 👋</h1>
+                    <p id="username-display" style="margin: 8px 0 0 0; color: rgba(255,255,255,0.9); font-size: 0.95rem;">Welcome to your profile</p>
+                </div>
+                <div style="width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; backdrop-filter: blur(10px);">
+                    👤
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Section -->
+        <div style="padding: 20px;">
+            <a href="#" onclick="handleLogout()" style="display: block; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: #fff; padding: 20px; border-radius: 16px; text-decoration: none; box-shadow: 0 4px 12px rgba(255,107,107,0.3); transition: transform 0.2s;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 4px;">LOG OUT →</div>
+                        <div style="font-size: 0.9rem; opacity: 0.95;">Sign out from your account</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Menu Items -->
+        <div style="padding: 0 20px 20px 20px;">
+            <!-- Settings -->
+            <a href="#" onclick="return handleSettings();" class="menu-item" style="display: flex; align-items: center; padding: 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: #333; transition: all 0.2s;">
+                <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-right: 16px;">
+                    ⚙️
+                </div>
+                <div style="flex: 1; font-size: 1.05rem; font-weight: 500;">Settings</div>
+                <div style="color: #999;">›</div>
+            </a>
+
+            <!-- Appearance -->
+            <a href="#" onclick="return handleAppearance();" class="menu-item" style="display: flex; align-items: center; padding: 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: #333; transition: all 0.2s;">
+                <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-right: 16px;">
+                    🎨
+                </div>
+                <div style="flex: 1; font-size: 1.05rem; font-weight: 500;">Appearance</div>
+                <div style="color: #999;">›</div>
+            </a>
+
+            <!-- Remove Ads -->
+            <a href="#" onclick="handleRemoveAds()" class="menu-item" style="display: flex; align-items: center; padding: 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: #333; transition: all 0.2s;">
+                <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-right: 16px;">
+                    💎
+                </div>
+                <div style="flex: 1; font-size: 1.05rem; font-weight: 500;">Remove ads</div>
+                <div style="color: #999;">›</div>
+            </a>
+            
+            <!-- Enjoying the app -->
+            <a href="#" onclick="handleRating()" class="menu-item" style="display: flex; align-items: center; padding: 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: #333; transition: all 0.2s;">
+                <div style="width: 40px; height: 40px; background: #fff3e0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-right: 16px;">
+                    ❤️
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-size: 1.05rem; font-weight: 500; margin-bottom: 4px;">Enjoying the app?</div>
+                    <div style="font-size: 0.85rem; color: #666;">Rate us ⭐⭐⭐⭐⭐ on Google Play</div>
+                </div>
+                <div style="color: #999;">›</div>
+            </a>
+
+            <!-- Help & Feedback -->
+            <a href="#" onclick="handleHelp()" class="menu-item" style="display: flex; align-items: center; padding: 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: #333; transition: all 0.2s;">
+                <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-right: 16px;">
+                    💬
+                </div>
+                <div style="flex: 1; font-size: 1.05rem; font-weight: 500;">Help & feedback</div>
+                <div style="color: #999;">›</div>
+            </a>
+
+            <!-- Help us translate -->
+            <a href="#" onclick="handleTranslate()" class="menu-item" style="display: flex; align-items: center; padding: 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 24px; text-decoration: none; color: #333; transition: all 0.2s;">
+                <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-right: 16px;">
+                    🌐
+                </div>
+                <div style="flex: 1; font-size: 1.05rem; font-weight: 500;">Help us translate</div>
+                <div style="color: #999;">›</div>
+            </a>
+
+            <!-- Footer Links -->
+            <div style="text-align: center; padding: 20px 0; color: #999; font-size: 0.9rem;">
+                <a href="#" style="color: #666; text-decoration: none; margin: 0 12px;">PRIVACY POLICY</a>
+                <span style="color: #ddd;">•</span>
+                <a href="#" style="color: #666; text-decoration: none; margin: 0 12px;">TERMS OF SERVICE</a>
+            </div>
+
+            <!-- App Version -->
+<div style="text-align: center; padding: 0 0 100px 0; color: #bbb; font-size: 0.85rem;">
+                Version 0.1.0 Beta
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+        <div id="settings-content" style="position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 24px 24px 0 0; padding: 24px; max-height: 70vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div style="width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px;"></div>
+            <h3 style="margin: 0 0 20px 0; font-size: 1.5rem; color: #333;">⚙️ Settings</h3>
+            
+            <!-- Notifications -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">🔔 Notifications</div>
+                        <div style="font-size: 0.85rem; color: #666;">Get reminders for your lists</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notifications-toggle" onchange="toggleNotifications(this)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Data Backup -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">💾 Auto Backup</div>
+                        <div style="font-size: 0.85rem; color: #666;">Backup data automatically</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="backup-toggle" onchange="toggleBackup(this)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Clear Data -->
+            <button onclick="clearAllData()" style="width: 100%; padding: 16px; background: #fff; border: 2px solid #ff6b6b; color: #ff6b6b; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-bottom: 12px;">
+                🗑️ Clear All Data
+            </button>
+            
+            <button onclick="hideSettingsModal()" style="width: 100%; padding: 16px; background: #f5f5f5; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Close</button>
+        </div>
+    </div>
+    
+    <!-- Appearance Modal -->
+    <div id="appearance-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(4px);">
+        <div id="appearance-content" style="position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 24px 24px 0 0; padding: 24px; max-height: 70vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <div style="width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px;"></div>
+            <h3 style="margin: 0 0 20px 0; font-size: 1.5rem; color: #333;">🎨 Appearance</h3>
+            
+            <!-- Dark Mode -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8f9fa; border-radius: 12px;">
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">🌙 Dark Mode</div>
+                        <div style="font-size: 0.85rem; color: #666;">Switch to dark theme</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkmode-toggle" onchange="toggleDarkMode(this)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Theme Colors -->
+            <div style="margin-bottom: 20px;">
+                <div style="font-weight: 600; margin-bottom: 12px;">🎨 Theme Color</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                    <div onclick="changeTheme('#22b14c')" style="width: 100%; aspect-ratio: 1; background: #22b14c; border-radius: 12px; cursor: pointer; border: 3px solid transparent; transition: all 0.2s;" class="theme-color"></div>
+                    <div onclick="changeTheme('#2196F3')" style="width: 100%; aspect-ratio: 1; background: #2196F3; border-radius: 12px; cursor: pointer; border: 3px solid transparent; transition: all 0.2s;" class="theme-color"></div>
+                    <div onclick="changeTheme('#ff6b6b')" style="width: 100%; aspect-ratio: 1; background: #ff6b6b; border-radius: 12px; cursor: pointer; border: 3px solid transparent; transition: all 0.2s;" class="theme-color"></div>
+                    <div onclick="changeTheme('#9c27b0')" style="width: 100%; aspect-ratio: 1; background: #9c27b0; border-radius: 12px; cursor: pointer; border: 3px solid transparent; transition: all 0.2s;" class="theme-color"></div>
+                </div>
+            </div>
+            
+            <!-- Font Size -->
+            <div style="margin-bottom: 20px;">
+                <div style="font-weight: 600; margin-bottom: 12px;">📏 Font Size</div>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="changeFontSize('small')" class="font-size-btn" style="flex: 1; padding: 12px; background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; font-weight: 600;">Small</button>
+                    <button onclick="changeFontSize('medium')" class="font-size-btn" style="flex: 1; padding: 12px; background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; font-weight: 600;">Medium</button>
+                    <button onclick="changeFontSize('large')" class="font-size-btn" style="flex: 1; padding: 12px; background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 10px; cursor: pointer; font-weight: 600;">Large</button>
+                </div>
+            </div>
+            
+            <button onclick="hideAppearanceModal()" style="width: 100%; padding: 16px; background: #f5f5f5; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Close</button>
+        </div>
+    </div>
+    
+    <!-- Toasts Container -->
+    <div id="toasts-container" style="position: fixed; right: 16px; bottom: 90px; display: flex; flex-direction: column; gap: 10px; z-index: 2000; align-items: flex-end; max-width: calc(100% - 32px);"></div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav" style="z-index: 9999 !important; pointer-events: auto !important;">
+        <a href="index.html" class="nav-item" style="pointer-events: auto !important; cursor: pointer !important;">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Lists</span>
+        </a>
+        <a href="food_facts.html" class="nav-item" style="pointer-events: auto !important; cursor: pointer !important;">
+            <span class="nav-icon">🍎</span>
+            <span class="nav-label">Food facts</span>
+        </a>
+        <a href="profile.html" class="nav-item active" style="pointer-events: auto !important; cursor: pointer !important;">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Profile</span>
+        </a>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        if (!isLoggedIn) {
+            window.location.href = 'login.html';
+        }
+        
+        // Redirect admin to admin panel
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser === 'admin') {
+            window.location.href = 'admin.html';
+        }
+        
+        // Load dark mode on page load
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+        
+        // Load theme color on page load
+        const savedColor = localStorage.getItem('themeColor');
+        if (savedColor) {
+            updateThemeColor(savedColor);
+        }
+        
+        // Load font size on page load
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize) {
+            document.body.classList.add(`font-${savedFontSize}`);
+        }
+
+        // Display username
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = localStorage.getItem('currentUser') || 'Guest';
+            document.getElementById('username-display').textContent = `Welcome, ${username}!`;
+        });
+
+        // Add hover effects
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f8f9fa';
+                this.style.transform = 'translateX(4px)';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '#fff';
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Handle menu clicks
+        function handleLogout() {
+            showLogoutModal();
+            return false;
+        }
+        
+        function showLogoutModal() {
+            const modal = document.createElement('div');
+            modal.id = 'logout-modal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); animation: fadeIn 0.3s ease;';
+            
+            modal.innerHTML = `
+                <style>
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(50px); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    @keyframes wave {
+                        0%, 100% { transform: rotate(0deg); }
+                        25% { transform: rotate(20deg); }
+                        75% { transform: rotate(-20deg); }
+                    }
+                </style>
+                <div style="background: white; border-radius: 24px; padding: 40px 32px; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 20px; animation: wave 1s ease infinite;">👋</div>
+                    <h2 style="margin: 0 0 12px 0; font-size: 1.8rem; color: #333;">See You Soon!</h2>
+                    <p style="color: #666; margin-bottom: 32px; font-size: 1rem; line-height: 1.5;">Are you sure you want to logout?<br>Your data will be saved.</p>
+                    
+                    <div style="display: flex; gap: 12px;">
+                        <button onclick="cancelLogout()" style="flex: 1; padding: 14px; background: #f5f5f5; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            Cancel
+                        </button>
+                        <button onclick="confirmLogout()" style="flex: 1; padding: 14px; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); border: none; color: white; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(255,107,107,0.3); transition: all 0.2s;">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add hover effects
+            const buttons = modal.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    if (this.textContent.trim() === 'Logout') {
+                        this.style.boxShadow = '0 6px 16px rgba(255,107,107,0.4)';
+                    }
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    if (this.textContent.trim() === 'Logout') {
+                        this.style.boxShadow = '0 4px 12px rgba(255,107,107,0.3)';
+                    }
+                });
+            });
+        }
+        
+        function cancelLogout() {
+            const modal = document.getElementById('logout-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.2s ease';
+                setTimeout(() => modal.remove(), 200);
+            }
+        }
+        
+        function confirmLogout() {
+            const modal = document.getElementById('logout-modal');
+            const modalContent = modal.querySelector('div > div');
+            
+            // Show loading animation
+            modalContent.innerHTML = `
+                <div style="padding: 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 16px; animation: wave 0.6s ease infinite;">👋</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: #333; margin-bottom: 8px;">Logging out...</div>
+                    <div style="width: 200px; height: 4px; background: #f0f0f0; border-radius: 2px; margin: 0 auto; overflow: hidden;">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #ff6b6b, #ee5a6f); animation: progress 1s ease;"></div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes progress {
+                        from { transform: translateX(-100%); }
+                        to { transform: translateX(0); }
+                    }
+                </style>
+            `;
+            
+            // Logout after animation
+            setTimeout(() => {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('currentUserEmail');
+                window.location.href = 'login.html';
+            }, 1000);
+        }
+
+        function handleSettings() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-content');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                content.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Load saved settings
+            document.getElementById('notifications-toggle').checked = localStorage.getItem('notifications') === 'true';
+            document.getElementById('backup-toggle').checked = localStorage.getItem('autoBackup') === 'true';
+            return false;
+        }
+        
+        function hideSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-content');
+            content.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        function toggleNotifications(checkbox) {
+            localStorage.setItem('notifications', checkbox.checked);
+            showToast(checkbox.checked ? '🔔 Notifications enabled' : '🔕 Notifications disabled', checkbox.checked ? 'success' : 'info');
+        }
+        
+        function toggleBackup(checkbox) {
+            localStorage.setItem('autoBackup', checkbox.checked);
+            showToast(checkbox.checked ? '💾 Auto backup enabled' : '💾 Auto backup disabled', checkbox.checked ? 'success' : 'info');
+        }
+        
+        function clearAllData() {
+            if (confirm('⚠️ Are you sure you want to clear all data?\n\nThis will delete:\n- All lists\n- All items\n- All settings\n\nThis action cannot be undone!')) {
+                localStorage.removeItem('allLists');
+                localStorage.removeItem('notifications');
+                localStorage.removeItem('autoBackup');
+                localStorage.removeItem('darkMode');
+                localStorage.removeItem('themeColor');
+                localStorage.removeItem('fontSize');
+                hideSettingsModal();
+                showToast('🗑️ All data cleared successfully', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            }
+        }
+
+        function handleAppearance() {
+            const modal = document.getElementById('appearance-modal');
+            const content = document.getElementById('appearance-content');
+            modal.style.display = 'block';
+            setTimeout(() => {
+                content.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Load saved appearance
+            document.getElementById('darkmode-toggle').checked = localStorage.getItem('darkMode') === 'true';
+            return false;
+        }
+        
+        function hideAppearanceModal() {
+            const modal = document.getElementById('appearance-modal');
+            const content = document.getElementById('appearance-content');
+            content.style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        function toggleDarkMode(checkbox) {
+            // Check if feature is available
+            const canUse = canUseFeature('dark_mode');
+            if (!canUse.allowed) {
+                checkbox.checked = false;
+                showPremiumFeatureModal('dark_mode');
+                return;
+            }
+            
+            localStorage.setItem('darkMode', checkbox.checked);
+            if (checkbox.checked) {
+                document.body.classList.add('dark-mode');
+                showToast('🌙 Dark mode enabled', 'success');
+            } else {
+                document.body.classList.remove('dark-mode');
+                showToast('☀️ Light mode enabled', 'success');
+            }
+        }
+        
+        function changeTheme(color) {
+            // Check if feature is available
+            const canUse = canUseFeature('theme_color');
+            if (!canUse.allowed) {
+                showPremiumFeatureModal('theme_color');
+                return;
+            }
+            
+            localStorage.setItem('themeColor', color);
+            document.documentElement.style.setProperty('--primary-color', color);
+            
+            // Update all elements with primary color
+            updateThemeColor(color);
+            showToast('🎨 Theme color changed!', 'success');
+        }
+        
+        function updateThemeColor(color) {
+            // Update header gradient
+            const header = document.querySelector('[style*="linear-gradient"]');
+            if (header) {
+                const darkerColor = adjustColor(color, -20);
+                header.style.background = `linear-gradient(135deg, ${color} 0%, ${darkerColor} 100%)`;
+            }
+            
+            // Update FAB button if exists
+            const fab = document.querySelector('.fab');
+            if (fab) fab.style.background = color;
+            
+            // Update toggle switches
+            const style = document.createElement('style');
+            style.id = 'theme-override';
+            style.textContent = `
+                input:checked + .toggle-slider {
+                    background-color: ${color} !important;
+                }
+            `;
+            const oldStyle = document.getElementById('theme-override');
+            if (oldStyle) oldStyle.remove();
+            document.head.appendChild(style);
+        }
+        
+        function adjustColor(color, amount) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+            const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amount));
+            return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+        }
+        
+        function changeFontSize(size) {
+            localStorage.setItem('fontSize', size);
+            
+            // Remove previous font size class
+            document.body.classList.remove('font-small', 'font-medium', 'font-large');
+            
+            // Add new font size class
+            document.body.classList.add(`font-${size}`);
+            
+            showToast(`📏 Font size: ${size}`, 'success');
+        }
+        
+        function showToast(message, type = 'success', options = {}) {
+            const container = document.getElementById('toasts-container');
+            const duration = Math.max(1500, Math.min(options.duration || 3500, 10000));
+            const icons = { success: '✓', error: '✕', info: 'ℹ' };
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.setAttribute('data-type', type);
+            toast.innerHTML = `
+                <div class="toast-inner">
+                    <div class="toast-icon">${icons[type] || icons.success}</div>
+                    <div class="toast-content">${message}</div>
+                    <button class="toast-close" aria-label="Close">×</button>
+                </div>
+                <div class="toast-progress"></div>
+            `;
+            container.appendChild(toast);
+
+            // Trigger show animation
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            // Progress bar animation
+            const progress = toast.querySelector('.toast-progress');
+            progress.style.transition = `transform ${duration}ms linear`;
+            requestAnimationFrame(() => {
+                progress.style.transform = 'scaleX(0)';
+            });
+
+            // Dismiss handlers
+            const removeToast = () => {
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+                setTimeout(() => toast.remove(), 250);
+            };
+            const closeBtn = toast.querySelector('.toast-close');
+            closeBtn.addEventListener('click', removeToast);
+            toast.addEventListener('click', (e) => {
+                if (e.target === toast) removeToast();
+            });
+
+            // Auto dismiss
+            const timer = setTimeout(removeToast, duration);
+            // Pause on hover
+            let remaining = duration;
+            let start = Date.now();
+            toast.addEventListener('mouseenter', () => {
+                clearTimeout(timer);
+                remaining -= Date.now() - start;
+                progress.style.transition = 'none';
+            });
+            toast.addEventListener('mouseleave', () => {
+                start = Date.now();
+                progress.style.transition = `transform ${remaining}ms linear`;
+                progress.style.transform = 'scaleX(0)';
+                setTimeout(removeToast, remaining);
+            });
+        }
+        
+        // Close modals when clicking backdrop
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'settings-modal') hideSettingsModal();
+            if (e.target.id === 'appearance-modal') hideAppearanceModal();
+        });
+
+        function handleRemoveAds() {
+            showRemoveAdsModal();
+            return false;
+        }
+
+        function handleRating() {
+            showToast('Thank you for your support! ⭐⭐⭐⭐⭐', 'success');
+            return false;
+        }
+        
+        // Show Premium Feature Blocked Modal
+        function showPremiumFeatureModal(feature) {
+            const featureInfo = {
+                'dark_mode': {
+                    icon: '🌙',
+                    title: 'Dark Mode',
+                    description: 'Protect your eyes with dark mode',
+                    benefit: 'Reduce eye strain and save battery'
+                },
+                'theme_color': {
+                    icon: '🎨',
+                    title: 'Custom Theme Colors',
+                    description: 'Personalize your app with custom colors',
+                    benefit: 'Make the app truly yours'
+                }
+            };
+            
+            const info = featureInfo[feature] || featureInfo['dark_mode'];
+            
+            const modal = document.createElement('div');
+            modal.id = 'premium-feature-modal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); animation: fadeIn 0.3s ease;';
+            
+            modal.innerHTML = `
+                <div style="background: #fff; border-radius: 16px; width: min(360px, 92vw); box-shadow: 0 24px 70px rgba(0,0,0,0.45); transform: translateY(10px); opacity: 0; animation: popIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; overflow: hidden;">
+                    <!-- Header -->
+                    <div style="position: relative; background: linear-gradient(135deg, #667eea, #764ba2); padding: 16px 18px 46px 18px; color: #fff; text-align: center;">
+                        <div style="position: absolute; top: 10px; right: 12px; cursor: pointer; font-size: 20px; opacity: 0.85;" onclick=\"closePremiumFeatureModal()\">×</div>
+                        <div style="width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.2); display: grid; place-items: center; font-size: 28px; margin: 0 auto 8px;">${info.icon}</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.25);">${info.title}</div>
+                    </div>
+                    <!-- Content -->
+                    <div style="padding: 16px 18px;">
+                        <div style="display: inline-block; background: #fff3e0; color: #e65100; padding: 6px 10px; border-radius: 14px; font-size: 0.8rem; font-weight: 600; margin-bottom: 10px;">🔒 PREMIUM FEATURE</div>
+                        <p style="margin: 0 0 12px 0; color: #555; font-size: 0.95rem;">${info.description}</p>
+                        <ul style="margin: 0 0 14px 18px; color: #333; font-size: 0.9rem; line-height: 1.7; padding: 0;">
+                            <li>${info.benefit}</li>
+                            <li>Unlimited lists & items</li>
+                            <li>No advertisements</li>
+                            <li>All premium features</li>
+                        </ul>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="showUpgradeModal(); closePremiumFeatureModal();" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #FFD700, #FFA500); border: none; color: #000; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 16px rgba(255,165,0,0.35);">Upgrade</button>
+                            <button onclick="closePremiumFeatureModal()" style="flex: 1; padding: 12px; background: #f3f3f3; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Later</button>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes popIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+                </style>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function closePremiumFeatureModal() {
+            const modal = document.getElementById('premium-feature-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.2s ease';
+                setTimeout(() => modal.remove(), 200);
+            }
+        }
+
+        // Compact Remove Ads Modal (fixed, not too large)
+        function showRemoveAdsModal() {
+            const modal = document.createElement('div');
+            modal.id = 'remove-ads-modal';
+            modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); animation: fadeIn 0.2s ease;';
+            
+            modal.innerHTML = `
+                <div style="background: #fff; border-radius: 20px; width: min(360px, 92vw); box-shadow: 0 20px 60px rgba(0,0,0,0.35); overflow: hidden; transform: translateY(10px); opacity: 0; animation: popIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;">
+                    <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a6f); padding: 18px 20px; color: #fff; text-align: center; position: relative;">
+                        <div style="position: absolute; top: 10px; right: 12px; font-size: 20px; cursor: pointer; opacity: 0.85;" onclick=\"closeRemoveAdsModal()\">×</div>
+                        <div style="font-size: 40px; line-height: 1; margin-bottom: 8px;">🚫</div>
+                        <div style="font-size: 1.3rem; font-weight: 700;">Remove Ads</div>
+                    </div>
+                    <div style="padding: 16px 18px;">
+                        <div style="display: inline-block; background: #fff3e0; color: #e65100; padding: 6px 10px; border-radius: 14px; font-size: 0.8rem; font-weight: 600; margin-bottom: 10px;">🔒 PREMIUM FEATURE</div>
+                        <p style="margin: 0 0 12px 0; color: #555; font-size: 0.95rem;">Upgrade to premium to enjoy an ad‑free experience.</p>
+                        <ul style="margin: 0 0 14px 18px; color: #333; font-size: 0.9rem; line-height: 1.7; padding: 0;">
+                            <li>No advertisements</li>
+                            <li>Unlimited lists & items</li>
+                            <li>All premium features</li>
+                        </ul>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="showUpgradeModal(); closeRemoveAdsModal();" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #FFD700, #FFA500); border: none; color: #000; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 16px rgba(255,165,0,0.35);">Upgrade</button>
+                            <button onclick="closeRemoveAdsModal()" style="flex: 1; padding: 12px; background: #f3f3f3; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Later</button>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes popIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+                </style>
+            `;
+            document.body.appendChild(modal);
+        }
+        function closeRemoveAdsModal() {
+            const modal = document.getElementById('remove-ads-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.15s ease';
+                setTimeout(() => modal.remove(), 150);
+            }
+        }
+
+        function handleHelp() {
+            showHelpModal();
+            return false;
+        }
+
+        function handleTranslate() {
+            showTranslateModal();
+            return false;
+        }
+
+        // Help & Feedback Modal (compact pop-in)
+        function showHelpModal() {
+            const modal = document.createElement('div');
+            modal.id = 'help-modal';
+            modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); animation: fadeIn 0.2s ease;';
+            modal.innerHTML = `
+                <div style="background: #fff; border-radius: 16px; width: min(360px, 92vw); box-shadow: 0 24px 70px rgba(0,0,0,0.45); transform: translateY(10px); opacity: 0; animation: popIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; overflow: hidden;">
+                    <div style="position: relative; background: linear-gradient(135deg, #42a5f5, #1e88e5); padding: 16px 18px 46px 18px; color: #fff; text-align: center;">
+                        <div style="position: absolute; top: 10px; right: 12px; cursor: pointer; font-size: 20px; opacity: 0.85;" onclick=\"closeHelpModal()\">×</div>
+                        <div style="width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.2); display: grid; place-items: center; font-size: 28px; margin: 0 auto 8px;">💬</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.25);">Help & Feedback</div>
+                    </div>
+                    <div style="padding: 16px 18px;">
+                        <p style="margin: 0 0 10px 0; color: #555; font-size: 0.95rem;">How can we help you?</p>
+                        <ul style="margin: 0 0 14px 18px; color: #333; font-size: 0.9rem; line-height: 1.7; padding: 0;">
+                            <li>Browse FAQ</li>
+                            <li>Contact support</li>
+                            <li>Report a bug</li>
+                            <li>Request a feature</li>
+                        </ul>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="closeHelpModal(); showToast('📨 We will get back to you soon', 'info');" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #42a5f5, #1e88e5); border: none; color: #fff; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 16px rgba(30,136,229,0.35);">Contact</button>
+                            <button onclick="closeHelpModal()" style="flex: 1; padding: 12px; background: #f3f3f3; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Close</button>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes popIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+                </style>
+            `;
+            document.body.appendChild(modal);
+        }
+        function closeHelpModal() {
+            const modal = document.getElementById('help-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.15s ease';
+                setTimeout(() => modal.remove(), 150);
+            }
+        }
+
+        // Translate Modal (compact pop-in)
+        function showTranslateModal() {
+            const modal = document.createElement('div');
+            modal.id = 'translate-modal';
+            modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); animation: fadeIn 0.2s ease;';
+            modal.innerHTML = `
+                <div style="background: #fff; border-radius: 16px; width: min(360px, 92vw); box-shadow: 0 24px 70px rgba(0,0,0,0.45); transform: translateY(10px); opacity: 0; animation: popIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; overflow: hidden;">
+                    <div style="position: relative; background: linear-gradient(135deg, #26c6da, #00acc1); padding: 16px 18px 46px 18px; color: #fff; text-align: center;">
+                        <div style="position: absolute; top: 10px; right: 12px; cursor: pointer; font-size: 20px; opacity: 0.85;" onclick=\"closeTranslateModal()\">×</div>
+                        <div style="width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.2); display: grid; place-items: center; font-size: 28px; margin: 0 auto 8px;">🌐</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.25);">Help us translate</div>
+                    </div>
+                    <div style="padding: 16px 18px;">
+                        <p style="margin: 0 0 10px 0; color: #555; font-size: 0.95rem;">Join our community translators to make this app available in your language.</p>
+                        <ul style="margin: 0 0 14px 18px; color: #333; font-size: 0.9rem; line-height: 1.7; padding: 0;">
+                            <li>Contribute translations</li>
+                            <li>Vote and review strings</li>
+                            <li>Get early access perks</li>
+                        </ul>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="closeTranslateModal(); showToast('🌐 Thanks for joining!', 'success');" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #26c6da, #00acc1); border: none; color: #fff; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 16px rgba(0,172,193,0.35);">Join</button>
+                            <button onclick="closeTranslateModal()" style="flex: 1; padding: 12px; background: #f3f3f3; border: none; color: #666; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Later</button>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes popIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+                </style>
+            `;
+            document.body.appendChild(modal);
+        }
+        function closeTranslateModal() {
+            const modal = document.getElementById('translate-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.15s ease';
+                setTimeout(() => modal.remove(), 150);
+            }
+        }
+    </script>
+
+    <style>
+        .menu-item:active {
+            transform: scale(0.98) !important;
+        }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 28px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #22b14c;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+        
+        /* Theme color hover */
+        .theme-color:hover {
+            transform: scale(1.1);
+            border-color: #333 !important;
+        }
+        
+        /* Font size button active */
+        .font-size-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* New Toast Styles */
+        .toast {
+            width: min(420px, calc(100vw - 32px));
+            background: #222;
+            color: #fff;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            transform: translateY(12px) scale(0.98);
+            opacity: 0;
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+            overflow: hidden;
+            backdrop-filter: blur(6px);
+        }
+        .toast.show { transform: translateY(0) scale(1); opacity: 1; }
+        .toast.hide { opacity: 0; transform: translateY(6px) scale(0.98); }
+        .toast + .toast { margin-top: 0; }
+        .toast-inner { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+        .toast-icon { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; }
+        .toast-content { flex: 1; font-size: 0.95rem; line-height: 1.35; }
+        .toast-close { background: transparent; color: inherit; border: none; font-size: 20px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+        .toast-close:hover { opacity: 1; }
+        .toast-progress { height: 3px; transform-origin: left; transform: scaleX(1); }
+        
+        /* Variants */
+        .toast[data-type="success"] { background: linear-gradient(135deg, #22b14c, #1a8f3d); }
+        .toast[data-type="success"] .toast-icon { background: rgba(255,255,255,0.2); }
+        .toast[data-type="success"] .toast-progress { background: rgba(255,255,255,0.9); }
+
+        .toast[data-type="error"] { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+        .toast[data-type="error"] .toast-icon { background: rgba(255,255,255,0.2); }
+        .toast[data-type="error"] .toast-progress { background: rgba(255,255,255,0.9); }
+
+        .toast[data-type="info"] { background: linear-gradient(135deg, #2196F3, #1976D2); }
+        .toast[data-type="info"] .toast-icon { background: rgba(255,255,255,0.2); }
+        .toast[data-type="info"] .toast-progress { background: rgba(255,255,255,0.9); }
+        
+        /* Dark mode compatibility */
+        body.dark-mode .toast { color: #fff; }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .container {
+            background-color: #1a1a1a;
+        }
+        
+        body.dark-mode .menu-item {
+            background: #2d2d2d !important;
+            border-color: #404040 !important;
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-mode .menu-item:hover {
+            background: #353535 !important;
+        }
+        
+        body.dark-mode #settings-content,
+        body.dark-mode #appearance-content {
+            background: #2d2d2d;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode #settings-content h3,
+        body.dark-mode #appearance-content h3 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode #settings-content > div > div,
+        body.dark-mode #appearance-content > div > div {
+            background: #1a1a1a !important;
+        }
+        
+        body.dark-mode .font-size-btn {
+            background: #1a1a1a !important;
+            border-color: #404040 !important;
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-mode .bottom-nav {
+            background-color: #2d2d2d;
+            border-top-color: #404040;
+        }
+        
+        body.dark-mode .nav-item {
+            color: #999;
+        }
+        
+        body.dark-mode .nav-item.active {
+            color: #22b14c;
+        }
+        
+        /* Font Size Styles */
+        body.font-small {
+            font-size: 14px;
+        }
+        
+        body.font-small h1 {
+            font-size: 1.6rem !important;
+        }
+        
+        body.font-small h2 {
+            font-size: 1.1rem !important;
+        }
+        
+        body.font-small .menu-item {
+            font-size: 0.9rem !important;
+        }
+        
+        body.font-small .nav-label {
+            font-size: 0.75rem !important;
+        }
+        
+        body.font-medium {
+            font-size: 16px;
+        }
+        
+        body.font-large {
+            font-size: 18px;
+        }
+        
+        body.font-large h1 {
+            font-size: 2.4rem !important;
+        }
+        
+        body.font-large h2 {
+            font-size: 1.5rem !important;
+        }
+        
+        body.font-large .menu-item {
+            font-size: 1.15rem !important;
+        }
+        
+        body.font-large .nav-label {
+            font-size: 0.95rem !important;
+        }
+        
+        /* CSS Variables for Theme */
+        :root {
+            --primary-color: #22b14c;
+        }
+    </style>
+</body>
+</html>

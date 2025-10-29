@@ -1,0 +1,146 @@
+/* theme-styles.css - Global theme styles for all pages */
+
+/* CSS Variables */
+:root {
+    --primary-color: #22b14c;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .container {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .header {
+    background: #2d2d2d !important;
+    border-bottom-color: #404040;
+}
+
+body.dark-mode .card {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .menu-item {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .menu-item:hover {
+    background: #353535 !important;
+}
+
+body.dark-mode .content {
+    background: #1a1a1a;
+}
+
+body.dark-mode #settings-content,
+body.dark-mode #appearance-content,
+body.dark-mode #menu-content,
+body.dark-mode #edit-modal-content,
+body.dark-mode #delete-modal-content {
+    background: #2d2d2d;
+    color: #e0e0e0;
+}
+
+body.dark-mode #settings-content h3,
+body.dark-mode #appearance-content h3,
+body.dark-mode #menu-content h3 {
+    color: #e0e0e0;
+}
+
+body.dark-mode #settings-content > div > div,
+body.dark-mode #appearance-content > div > div {
+    background: #1a1a1a !important;
+}
+
+body.dark-mode .font-size-btn,
+body.dark-mode button {
+    background: #1a1a1a !important;
+    border-color: #404040 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .bottom-nav {
+    background-color: #2d2d2d;
+    border-top-color: #404040;
+}
+
+body.dark-mode .nav-item {
+    color: #999;
+}
+
+body.dark-mode .nav-item.active {
+    color: var(--primary-color);
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"] {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+body.dark-mode .item-card {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+}
+
+body.dark-mode .summary-card {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+}
+
+/* Font Size Styles */
+body.font-small {
+    font-size: 14px;
+}
+
+body.font-small h1 {
+    font-size: 1.6rem !important;
+}
+
+body.font-small h2 {
+    font-size: 1.1rem !important;
+}
+
+body.font-small .menu-item,
+body.font-small .card {
+    font-size: 0.9rem !important;
+}
+
+body.font-small .nav-label {
+    font-size: 0.75rem !important;
+}
+
+body.font-medium {
+    font-size: 16px;
+}
+
+body.font-large {
+    font-size: 18px;
+}
+
+body.font-large h1 {
+    font-size: 2.4rem !important;
+}
+
+body.font-large h2 {
+    font-size: 1.5rem !important;
+}
+
+body.font-large .menu-item,
+body.font-large .card {
+    font-size: 1.15rem !important;
+}
+
+body.font-large .nav-label {
+    font-size: 0.95rem !important;
+}

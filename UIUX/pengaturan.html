@@ -1,65 +1,67 @@
-<!-- pengaturan.html -->
+<!-- pengaturan.html (Versi Lengkap dengan Navigasi) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
+    <title>Pengaturan</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Settings</h1>
+            <!-- Tombol kembali ini bisa Anda hapus jika sudah ada navigasi bawah,
+                 tapi tidak apa-apa jika tetap ada untuk saat ini. -->
+            <a href="index.html" style="text-decoration: none;">&larr; Back</a>
+            <h1>Pengaturan</h1>
         </div>
-        <div class="content" style="padding: 20px;">
+        <div class="content">
             <!-- Daftar Menu Pengaturan -->
-            <div class="settings-list" style="border-top: none;">
-
-                <a href="#" onclick="alert('Redirecting to store...')" class="settings-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; color: #333;">
-                    <span style="font-size: 1.5rem;">⭐</span>
-                    <span style="flex: 1;">Rate Us</span>
-                    <span>&rsaquo;</span>
-                </a>
-                <a href="#" onclick="alert('Send feedback form...')" class="settings-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; color: #333;">
-                    <span style="font-size: 1.5rem;">✉️</span>
-                    <span style="flex: 1;">Send Feedback</span>
-                    <span>&rsaquo;</span>
-                </a>
-                <a href="#" onclick="alert('Showing Privacy Policy...')" class="settings-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; color: #333;">
-                    <span style="font-size: 1.5rem;">🛡️</span>
-                    <span style="flex: 1;">Privacy Policy</span>
-                    <span>&rsaquo;</span>
-                </a>
-                <a href="#" onclick="alert('Showing Terms of Service...')" class="settings-item" style="display: flex; align-items: center; gap: 16px; text-decoration: none; color: #333;">
-                    <span style="font-size: 1.5rem;">⚖️</span>
-                    <span style="flex: 1;">Terms of Service</span>
-                    <span>&rsaquo;</span>
-                </a>
+            <div class="settings-list">
+                <div class="settings-item">
+                    <span>Remove Ads</span>
+                </div>
+                <div class="settings-item">
+                    <span>Rate Us on Play Store</span>
+                </div>
+                <div class="settings-item">
+                    <span>Send Feedback</span>
+                </div>
+                <div class="settings-item">
+                    <span>Privacy Policy</span>
+                </div>
+                <div class="settings-item">
+                    <span>Terms of Service</span>
+                </div>
             </div>
             
-            <div class="app-version" style="margin-top: 40px; text-align: center; color: #aaa;">
-                <p>Version 1.0.0</p>
+            <div class="app-version">
+                <p>App Version 1.0.0 (MVP)</p>
             </div>
         </div>
-    </div>
+    </div> <!-- Akhir dari .container -->
 
-    <!-- Bottom Navigation -->
+    <!-- ======================================================= -->
+    <!-- == BAGIAN BARU: BILAH NAVIGASI BAWAH DITAMBAHKAN DI SINI == -->
+    <!-- ======================================================= -->
     <div class="bottom-nav">
         <a href="index.html" class="nav-item">
-            <span class="nav-icon">📋</span>
-            <span class="nav-label">Lists</span>
+            <span>Lists</span>
         </a>
-        <a href="pantry.html" class="nav-item">
-            <span class="nav-icon">📦</span>
-            <span class="nav-label">Pantry</span>
-        </a>
-        <a href="pengaturan.html" class="nav-item active">
-            <span class="nav-icon">⚙️</span>
-            <span class="nav-label">Settings</span>
+        <a href="pengaturan.html" class="nav-item active"> <!-- Perhatikan kelas 'active' di sini -->
+            <span>Pengaturan</span>
         </a>
     </div>
+    <!-- ======================================================= -->
+    <!-- =================== AKHIR BAGIAN BARU =================== -->
+    <!-- ======================================================= -->
 
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
