@@ -4,34 +4,31 @@
 
 #### Sprint 0: Fondasi & Penyiapan Proyek (Minggu 1-2)
 *Tujuan: Menyiapkan seluruh kerangka kerja, arsitektur, dan alat yang dibutuhkan.*
-**Status: SELESAI**
 
--   [x] Inisialisasi Proyek (Flutter, Git).
--   [x] Manajemen Dependensi (`pubspec.yaml`).
--   [x] Struktur Proyek (Sederhana).
--   [x] Konfigurasi Database Awal (Drift, tabel `shopping_lists` & `shopping_items`).
--   [x] Konfigurasi Dasar Aplikasi (`main.dart`, `GoRouter`, `AppTheme`).
+-   [ ] Inisialisasi Proyek (Flutter, Git).
+-   [ ] Manajemen Dependensi (`pubspec.yaml`).
+-   [ ] Struktur Proyek (Sederhana).
+-   [ ] Konfigurasi Database Awal (Drift, tabel `shopping_lists` & `shopping_items`).
+-   [ ] Konfigurasi Dasar Aplikasi (`main.dart`, `GoRouter`, `AppTheme`).
 
 ---
 
 #### Sprint 1: Fungsionalitas Inti Daftar Belanja (CRUD Lists) (Minggu 3-4)
 *Tujuan: Pengguna dapat membuat, melihat, mengedit, dan menghapus daftar belanja.*
-**Status: SELESAI**
 
--   [x] Business & Data Layer untuk `ShoppingList`.
--   [x] Presentation Layer (`ShoppingListsScreen`, `ShoppingListBloc`).
--   [x] Fungsionalitas UI untuk menambah, mengedit, dan menghapus daftar.
+-   [ ] Business & Data Layer untuk `ShoppingList`.
+-   [ ] Presentation Layer (`ShoppingListsScreen`, `ShoppingListBloc`).
+-   [ ] Fungsionalitas UI untuk menambah, mengedit, dan menghapus daftar.
 
 ---
 
 #### Sprint 2: Fungsionalitas Inti Item Belanja & Finalisasi (Minggu 5-6)
 *Tujuan: Pengguna dapat mengelola item dalam daftar dan navigasi aplikasi berfungsi penuh.*
-**Status: SEBAGIAN BESAR SELESAI**
 
--   [x] Business & Data Layer untuk `ShoppingItem`.
--   [x] Presentation Layer (`ListDetailScreen`, `ListDetailBloc`).
--   [x] Logika untuk menambah, mengedit, menghapus, dan menandai item.
--   [x] Logika kalkulasi total belanja.
+-   [ ] Business & Data Layer untuk `ShoppingItem`.
+-   [ ] Presentation Layer (`ListDetailScreen`, `ListDetailBloc`).
+-   [ ] Logika untuk menambah, mengedit, menghapus, dan menandai item.
+-   [ ] Logika kalkulasi total belanja.
 
 
 ---
