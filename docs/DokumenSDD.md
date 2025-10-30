@@ -11,7 +11,7 @@
 Dokumen ini merinci desain teknis tingkat tinggi dan tingkat rendah untuk aplikasi "BelanjaPraktis". Tujuannya adalah untuk menjadi panduan bagi tim pengembang dalam mengimplementasikan sistem sesuai dengan arsitektur yang telah disepakati. Dokumen ini merupakan terjemahan dari persyaratan yang tercantum dalam SRS (Software Requirements Specification) v.1.0 ke dalam spesifikasi desain teknis.
 
 #### 1.2 Ruang Lingkup
-Desain yang dijelaskan dalam dokumen ini mencakup struktur arsitektur, desain komponen, desain database, dan strategi penanganan error untuk versi 1.0 aplikasi. Ini mencakup semua fungsionalitas yang didefinisikan dalam SRS, termasuk pengelolaan daftar dan item, kalkulasi total, template, dan monetisasi.
+Desain yang dijelaskan dalam dokumen ini mencakup struktur arsitektur, desain komponen, desain database, dan strategi penanganan error untuk versi 1.0 aplikasi. Ini mencakup semua fungsionalitas yang didefinisikan dalam SRS, termasuk pengelolaan daftar dan item, kalkulasi total, fitur AI untuk saran item, pengelolaan Stok Rumahku, dan monetisasi.
 
 #### 1.3 Referensi
 *   Software Requirements Specification (SRS) - BelanjaPraktis v1.0
@@ -65,6 +65,10 @@ Aplikasi ini akan mengadopsi pola **Layered Architecture** untuk memisahkan *con
      |
      V
 [ SQLite Database ]
+
+[ AI Service/Repository (Eksternal) ]
+
+[ Stok Rumahku Service/Repository (Eksternal) ]
 ```
 
 ---
@@ -72,24 +76,24 @@ Aplikasi ini akan mengadopsi pola **Layered Architecture** untuk memisahkan *con
 ### 3. Desain Rinci
 
 #### 3.1 Presentation Layer
-*   **Struktur UI (Views/Widgets):** UI akan dibangun menggunakan Flutter. Setiap layar (misalnya, `ShoppingListsScreen`, `ListDetailScreen`) akan menggunakan widget dari pustaka `flutter_bloc` seperti `BlocProvider`, `BlocBuilder`, dan `BlocListener` untuk terhubung dengan BLoC dan bereaksi terhadap perubahan *state*.
+*   **Struktur UI (Views/Widgets):** UI akan dibangun menggunakan Flutter. Setiap layar (misalnya, `ShoppingListsScreen`, `ListDetailScreen`, `StokRumahkuScreen`) akan menggunakan widget dari pustaka `flutter_bloc` seperti `BlocProvider`, `BlocBuilder`, dan `BlocListener` untuk terhubung dengan BLoC dan bereaksi terhadap perubahan *state*. `ShoppingListsScreen` akan menyediakan opsi untuk membuat daftar baru secara manual atau dengan bantuan AI (memasukkan tema untuk saran item).
 *   **Manajemen State (State Management):** **BLoC (Business Logic Component)** akan digunakan untuk mengelola state aplikasi. Pola ini memisahkan logika bisnis dari UI dengan jelas.
-    *   **Event:** Kelas-kelas sederhana yang merepresentasikan aksi pengguna atau kejadian sistem (misalnya, `LoadShoppingLists`, `AddListRequested`). Event dikirim dari UI ke BLoC.
-    *   **State:** Kelas *immutable* yang merepresentasikan kondisi UI pada satu waktu (misalnya, `ShoppingListLoading`, `ShoppingListLoaded`, `ShoppingListError`). UI akan me-*render* dirinya sendiri berdasarkan *state* saat ini.
-    *   **Bloc:** Kelas utama yang menerima *Events*, memprosesnya (dengan bantuan *repositories*), dan mengeluarkan *States* baru. BLoC akan berisi logika untuk memetakan event ke state.
+    *   **Event:** Kelas-kelas sederhana yang merepresentasikan aksi pengguna atau kejadian sistem (misalnya, `LoadShoppingLists`, `AddListRequested`, `GenerateListFromAI`, `LoadStokRumahkuItems`). Event dikirim dari UI ke BLoC.
+    *   **State:** Kelas *immutable* yang merepresentasikan kondisi UI pada satu waktu (misalnya, `ShoppingListLoading`, `ShoppingListLoaded`, `ShoppingListError`, `StokRumahkuLoaded`). UI akan me-*render* dirinya sendiri berdasarkan *state* saat ini.
+    *   **Bloc:** Kelas utama yang menerima *Events*, memprosesnya (dengan bantuan *repositories* dan *AI service*), dan mengeluarkan *States* baru. BLoC akan berisi logika untuk memetakan event ke state.
 
 #### 3.2 Business Logic Layer
 *   **Entities:** Entitas bisnis inti (misalnya, `ShoppingList`, `ShoppingItem`) akan didefinisikan sebagai kelas *immutable* menggunakan `freezed`. Entitas ini mewakili objek bisnis murni.
-*   **Repository Interfaces:** *Abstract class* akan mendefinisikan "kontrak" untuk operasi data (CRUD). Misalnya, `ShoppingListRepository` akan memiliki metode seperti `Future<Either<Failure, void>> addList(ShoppingList list)` atau `Stream<List<ShoppingList>> watchAllLists()`. BLoC akan bergantung pada interface ini, bukan pada implementasinya.
+*   **Repository Interfaces:** *Abstract class* akan mendefinisikan "kontrak" untuk operasi data (CRUD) dan interaksi dengan AI serta Stok Rumahku. Misalnya, `ShoppingListRepository` akan memiliki metode seperti `Future<Either<Failure, void>> addList(ShoppingList list)` atau `Stream<List<ShoppingList>> watchAllLists()`, `AIRepository` akan memiliki metode seperti `Future<Either<Failure, List<ShoppingItem>>> generateShoppingItems(String theme)`, dan `StokRumahkuRepository` akan memiliki metode seperti `Future<Either<Failure, void>> addStokRumahkuItem(StokRumahkuItem item)` atau `Stream<List<StokRumahkuItem>> watchAllStokRumahkuItems()`. BLoC akan bergantung pada interface ini, bukan pada implementasinya.
 
 #### 3.3 Data Layer
-*   **Data Sources:** Akan ada satu sumber data utama: `LocalDataSource`. Sumber data ini akan berinteraksi langsung dengan database SQLite menggunakan Drift.
+*   **Data Sources:** Akan ada tiga sumber data utama: `LocalDataSource`, `AIDataSource`, dan `StokRumahkuDataSource`. `LocalDataSource` akan berinteraksi langsung dengan database SQLite menggunakan Drift. `AIDataSource` akan bertanggung jawab untuk berkomunikasi dengan API AI eksternal. `StokRumahkuDataSource` akan mengelola data untuk fitur Stok Rumahku.
 *   **Data Models (Tables):** Drift akan digunakan untuk mendefinisikan skema tabel database. Model ini akan berbeda dari *Domain Entities*.
 *   **Repository Implementations:** Kelas ini akan mengimplementasikan *Repository Interfaces* dari Business Logic Layer. Tanggung jawabnya adalah:
-    1.  Memanggil metode yang sesuai pada `LocalDataSource`.
-    2.  Menangkap data dari database (dalam bentuk *Data Models* Drift).
-    3.  Memetakan (*map*) *Data Models* ke *Domain Entities*.
-    4.  Menangani *exception* dari database dan mengubahnya menjadi tipe *Failure* yang telah didefinisikan.
+    1.  Memanggil metode yang sesuai pada `LocalDataSource`, `AIDataSource`, atau `StokRumahkuDataSource`.
+    2.  Menangkap data dari database (dalam bentuk *Data Models* Drift) atau dari respons API AI.
+    3.  Memetakan (*map*) *Data Models* atau respons API ke *Domain Entities*.
+    4.  Menangani *exception* dari database atau API dan mengubahnya menjadi tipe *Failure* yang telah didefinisikan.
 
 #### 3.4 Penanganan Error (Error Handling)
 *   Aplikasi akan menggunakan pustaka `fpdart` dengan tipe `Either<L, R>` untuk menangani operasi yang dapat gagal.
@@ -101,11 +105,10 @@ Aplikasi ini akan mengadopsi pola **Layered Architecture** untuk memisahkan *con
 
 ### 4. Desain Database
 Desain database akan mengikuti skema yang telah didefinisikan, menggunakan Drift untuk mengelola database SQLite.
-*   **Tabel Utama:** `shopping_lists`, `shopping_items`, `item_categories`, `preset_items`, dan **`pantry_items`**.
+*   **Tabel Utama:** `shopping_lists`, `shopping_items`, dan **`stok_rumahku_items`**.
 *   **Relasi:**
     *   `shopping_lists` (one) → `shopping_items` (many)
-    *   `item_categories` (one) → `preset_items` (many)
-*   **Integritas Data:** *Foreign key constraints* dengan `ON DELETE CASCADE` akan digunakan untuk memastikan integritas data. Tabel `pantry_items` akan menjadi tabel independen yang menyimpan data item yang sudah dibeli.
+*   **Integritas Data:** *Foreign key constraints* dengan `ON DELETE CASCADE` akan digunakan untuk memastikan integritas data. Tabel `stok_rumahku_items` akan menjadi tabel independen yang menyimpan data item yang sudah dibeli, dengan kolom yang disederhanakan (hanya `id`, `name`, `added_at`).
 
 ---
 
@@ -116,35 +119,15 @@ Struktur direktori akan diatur dengan pendekatan yang lebih sederhana dan mudah 
 ```
 belanja_praktis/
 ├── lib/
-│   ├── data/                   # Semua yang berhubungan dengan data (database, model)
+│   ├── data/                   # Semua yang berhubungan dengan data (database, model, repository)
 │   │   ├── app_database.dart     # Definisi database Drift & semua tabel
-│   │   └── models/               # Semua model data (dari Freezed)
+│   │   ├── models/               # Semua model data (dari Freezed)
 │   │       ├── shopping_list.dart
 │   │       ├── shopping_item.dart
 │   │       └── pantry_item.dart
+│   │   └── repositories/         # Implementasi repository
+│   │       ├── shopping_list_repository.dart
+│   │       ├── pantry_repository.dart
+│   │       └── ai_repository.dart # Repository untuk interaksi dengan AI
 │   │
-│   ├── presentation/           # Semua yang berhubungan dengan tampilan (UI, state management)
-│   │   ├── screens/              # Folder untuk setiap layar utama
-│   │   │   ├── home_screen.dart
-│   │   │   ├── list_detail_screen.dart
-│   │   │   └── pantry_screen.dart
-│   │   │
-│   │   ├── widgets/              # Widget yang dipakai di banyak layar
-│   │   │   └── loading_indicator.dart
-│   │   │
-│   │   └── bloc/                 # Semua file BLoC/State Management
-│   │       ├── shopping_list_bloc.dart
-│   │       ├── list_detail_bloc.dart
-│   │       └── pantry_bloc.dart
-│   │
-│   ├── config/                 # Konfigurasi aplikasi (routing, theme)
-│   │   ├── app_router.dart       # Konfigurasi GoRouter
-│   │   └── app_theme.dart        # Tema aplikasi (warna, font)
-│   │
-│   └── main.dart               # Titik masuk aplikasi
-│
-├── test/                       # Folder untuk unit dan widget test
-│   └── ...
-│
-└── pubspec.yaml
 ```

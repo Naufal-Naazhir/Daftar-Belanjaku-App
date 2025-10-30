@@ -12,7 +12,7 @@
 Dokumen ini menyediakan spesifikasi persyaratan perangkat lunak yang detail untuk aplikasi mobile "BelanjaPraktis" versi 1.0. Tujuannya adalah untuk memberikan pemahaman yang jelas dan tidak ambigu tentang fungsionalitas dan batasan sistem kepada tim pengembang, tim pengujian (QA), dan pemangku kepentingan lainnya.
 
 **1.2 Ruang Lingkup Produk**
-Aplikasi "BelanjaPraktis" adalah sebuah aplikasi mandiri (*standalone*) untuk platform iOS dan Android yang berfungsi sebagai asisten belanja pribadi dan manajer inventaris rumah. Versi 1.0 akan fokus pada fungsionalitas inti pengelolaan daftar belanja, dan fitur pembeda yaitu **manajemen pantry cerdas** dengan pelacak kedaluwarsa.
+Aplikasi "BelanjaPraktis" adalah sebuah aplikasi mandiri (*standalone*) untuk platform iOS dan Android yang berfungsi sebagai asisten belanja pribadi dan manajer inventaris rumah. Versi 1.0 akan fokus pada fungsionalitas inti pengelolaan daftar belanja, dan fitur pembeda yaitu **manajemen stok rumahku sederhana**.
 
 **Ruang lingkup versi 1.0 TIDAK mencakup:**
 *   Sinkronisasi data antar perangkat (Cloud Sync).
@@ -29,7 +29,7 @@ Aplikasi "BelanjaPraktis" adalah sebuah aplikasi mandiri (*standalone*) untuk pl
 *   **CRUD:** Create, Read, Update, Delete
 *   **Daftar:** Kumpulan dari beberapa Item Belanja.
 *   **Item:** Satu entitas barang yang akan dibeli.
-*   **Pantry:** Inventaris virtual untuk item yang sudah dibeli dan disimpan di rumah.
+*   **Stok Rumahku:** Inventaris virtual untuk item yang sudah dibeli dan disimpan di rumah.
 *   **Preset:** Kumpulan item default untuk membuat daftar baru.
 
 **1.4 Referensi**
@@ -51,10 +51,10 @@ Fungsi utama dari aplikasi ini adalah sebagai berikut:
 1.  Membuat, melihat, mengedit, dan menghapus daftar belanja.
 2.  Menambah, mengedit, menghapus, dan menandai item dalam daftar.
 3.  Menghitung total harga belanja secara otomatis.
-4.  **Memindahkan item yang sudah dibeli ke dalam Pantry virtual.**
-5.  **Mengelola item di Pantry, termasuk melacak tanggal kedaluwarsa.**
-6.  **Memberikan notifikasi lokal untuk item yang akan kedaluwarsa.**
-7.  Menyediakan template daftar belanja untuk mempercepat pembuatan.
+4.  Memindahkan item yang sudah dibeli ke dalam Stok Rumahku virtual.
+5.  Mengelola item di Stok Rumahku (menandai ada/habis).
+6.  Memberikan peringatan jika item di daftar belanja sudah ada di Stok Rumahku.
+7.  Menyediakan fitur cerdas untuk membuat daftar belanja dengan saran item dari AI berdasarkan tema yang diberikan.
 8.  Menampilkan iklan (pada versi gratis) dan menyediakan fitur premium "Analisis & Laporan Pantry".
 
 **2.3 Karakteristik Pengguna**
@@ -75,12 +75,14 @@ Target pengguna adalah individu atau keluarga yang membutuhkan alat bantu digita
 
 **3.1 Persyaratan Fungsional**
 
-**3.1.1 Pengelolaan Daftar Belanja (List Management)**
+*   **3.1.1 Pengelolaan Daftar Belanja (List Management)**
 *   **FUNC-LM-001:** Sistem harus menyediakan fungsi untuk membuat daftar belanja baru.
 *   **FUNC-LM-002:** Sistem harus menampilkan semua daftar belanja yang ada di layar utama.
 *   **FUNC-LM-003:** Sistem harus mengizinkan pengguna untuk mengubah nama daftar belanja.
 *   **FUNC-LM-004:** Sistem harus menyediakan fungsi untuk menghapus daftar belanja.
-*   **FUNC-LM-005 (DITUNDA):** Pengurutan manual daftar belanja ditunda.
+*   **FUNC-LM-005:** Sistem harus menyediakan fungsi untuk membuat daftar belanja baru dengan memasukkan tema (misal: "bahan soto"), dan sistem akan secara otomatis mengisi daftar dengan item-item yang disarankan AI.
+*   **FUNC-LM-006:** Untuk item yang disarankan AI, sistem harus menampilkan perkiraan harga per satuan (jika tersedia).
+*   **FUNC-LM-007 (DITUNDA):** Pengurutan manual daftar belanja ditunda.
 
 **3.1.2 Pengelolaan Item Belanja (Item Management)**
 *   **FUNC-IM-001:** Sistem harus mengizinkan pengguna menambahkan item baru ke daftar belanja.
@@ -94,26 +96,25 @@ Target pengguna adalah individu atau keluarga yang membutuhkan alat bantu digita
 *   **FUNC-CALC-001:** Sistem harus secara otomatis menghitung dan menampilkan total harga dari item yang ada di daftar belanja.
 *   **FUNC-CALC-002:** Total harus diperbarui secara *real-time* saat ada perubahan pada item.
 
-**3.1.4 Template Preset**
-*   **FUNC-PRES-001:** Saat membuat daftar baru, sistem harus menawarkan opsi untuk memilih dari template.
-*   **FUNC-PRES-002:** Jika template dipilih, sistem harus mengisi daftar baru dengan item default.
 
-**3.1.5 Pengelolaan Pantry (Pantry Management) - BARU**
-*   **FUNC-PAN-001:** Sistem harus menyediakan fungsi untuk memindahkan item yang sudah ditandai (`is_bought`) dari daftar belanja ke Pantry.
-*   **FUNC-PAN-002:** Saat proses pemindahan, sistem harus mengizinkan pengguna untuk memasukkan tanggal kedaluwarsa (opsional) untuk setiap item.
-*   **FUNC-PAN-003:** Sistem harus memiliki layar "Pantry" yang menampilkan semua item yang tersimpan.
-*   **FUNC-PAN-004:** Setiap item di Pantry harus menampilkan nama dan sisa hari sebelum kedaluwarsa.
-*   **FUNC-PAN-005:** Sistem harus mengizinkan pengguna untuk menghapus item dari Pantry.
-*   **FUNC-PAN-006:** Saat pengguna mengetik item di daftar belanja, sistem dapat memberikan saran jika item tersebut sudah ada di Pantry.
 
-**3.1.6 Notifikasi (Notifications) - BARU**
-*   **FUNC-NOTIF-001:** Sistem harus dapat mengirimkan notifikasi lokal ke perangkat pengguna.
-*   **FUNC-NOTIF-002:** Sistem harus mengirimkan notifikasi jika ada item di Pantry yang akan kedaluwarsa dalam periode waktu yang ditentukan (misal, H-3).
+**3.1.4 Pengelolaan Stok Rumahku**
+*   **FUNC-SR-001:** Sistem harus menyediakan fungsi untuk memindahkan item yang sudah ditandai (`is_bought`) dari daftar belanja ke Stok Rumahku.
+*   **FUNC-SR-002:** Sistem harus memiliki layar "Stok Rumahku" yang menampilkan semua item yang tersimpan.
+*   **FUNC-SR-003:** Setiap item di Stok Rumahku harus menampilkan nama dan status keberadaan (ada/habis).
+*   **FUNC-SR-004:** Sistem harus mengizinkan pengguna untuk menghapus item dari Stok Rumahku.
+*   **FUNC-SR-005:** Saat pengguna menambahkan item ke daftar belanja, sistem harus memberikan peringatan jika item tersebut sudah ada di Stok Rumahku.
+
+
 
 **3.1.7 Monetisasi**
 *   **FUNC-MON-001:** Sistem harus menampilkan iklan *banner* pada versi gratis.
-*   **FUNC-MON-002:** Sistem harus menyediakan opsi IAP untuk membeli fitur premium **"Analisis & Laporan Pantry"**.
-*   **FUNC-MON-003:** Fitur premium ini mencakup akses ke dashboard analisis pengeluaran, laporan pemborosan, dan insight lainnya berdasarkan data Pantry pengguna.
+*   **FUNC-MON-002:** Sistem harus menyediakan opsi IAP untuk membeli fitur premium **"AI & Stok Rumahku Tanpa Batas"**.
+*   **FUNC-MON-003:** Fitur premium ini akan menghapus batasan pembuatan daftar belanja menggunakan AI dan batasan jumlah item di "Stok Rumahku".
+*   **FUNC-MON-004:** Sistem harus membatasi pembuatan daftar belanja menggunakan AI menjadi maksimal 3 daftar untuk pengguna versi gratis.
+*   **FUNC-MON-005:** Sistem harus membatasi jumlah item yang dapat disimpan di "Stok Rumahku" menjadi maksimal 20 item untuk pengguna versi gratis.
+*   **FUNC-MON-006:** Sistem harus menyediakan opsi IAP untuk membeli fitur premium **"Analisis & Laporan Belanja"**.
+*   **FUNC-MON-007:** Fitur premium ini mencakup akses ke dashboard analisis pengeluaran, laporan, dan *insight* lainnya berdasarkan data belanja pengguna.
 
 **3.2 Persyaratan Non-Fungsional**
 (Tidak ada perubahan signifikan, tetap berlaku)
@@ -121,13 +122,12 @@ Target pengguna adalah individu atau keluarga yang membutuhkan alat bantu digita
 **3.3 Persyaratan Antarmuka Eksternal**
 
 **3.3.1 Antarmuka Pengguna (GUI)**
-*   **GUI-001:** **Layar Daftar Belanja:** Menampilkan daftar dari `shopping_lists`.
-*   **GUI-002:** **Layar Detail Daftar:** Menampilkan item-item dari `shopping_items`. Terdapat tombol untuk "Pindahkan ke Pantry".
-*   **GUI-003:** **Layar Pantry (BARU):** Menampilkan semua item dari `pantry_items` dengan status kedaluwarsa.
-*   **GUI-004:** **Layar Pengaturan:** Berisi opsi-opsi aplikasi.
-*   **GUI-005:** **Navigasi:** Menggunakan `BottomNavigationBar` untuk navigasi utama antara "Daftar Belanja" dan "Pantry".
+*   **GUI-001:** **Layar Daftar Belanja:** Menampilkan daftar dari `shopping_lists`. Menyediakan opsi untuk membuat daftar baru (kosong atau dengan saran AI).
+*   **GUI-002:** **Layar Detail Daftar:** Menampilkan item-item dari `shopping_items`. Terdapat tombol untuk "Pindahkan ke Stok Rumahku".
+*   **GUI-003:** **Layar Stok Rumahku:** Menampilkan semua item dari `stok_rumahku_items` dengan status keberadaan.
+*   **GUI-005:** **Navigasi:** Menggunakan `BottomNavigationBar` untuk navigasi utama antara "Daftar Belanja" dan "Stok Rumahku".
 
 **3.4 Persyaratan Database**
 *   **DB-001:** Aplikasi harus menggunakan database SQLite.
 *   **DB-002:** Interaksi dengan database harus dikelola oleh pustaka Drift.
-*   **DB-003:** Skema database harus mengimplementasikan tabel `shopping_lists`, `shopping_items`, `item_categories`, `preset_items`, dan **`pantry_items`**.
+*   **DB-003:** Skema database harus mengimplementasikan tabel `shopping_lists`, `shopping_items`, dan **`stok_rumahku_items`**.

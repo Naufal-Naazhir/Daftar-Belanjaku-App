@@ -1,46 +1,30 @@
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:belanja_praktis/data/app_database.dart';
-import 'package:belanja_praktis/data/repositories/shopping_list_repository.dart';
+
 import 'package:belanja_praktis/main.dart';
 
-// 1. Create a mock/fake version of the repository
-class MockShoppingListRepository implements ShoppingListRepository {
-  @override
-  Future<int> addList(String name) async => 1;
-
-  @override
-  Future<int> deleteList(int id) async => 1;
-
-  @override
-  Future<bool> updateList(ShoppingListsCompanion list) async => true;
-
-  @override
-  Stream<List<ShoppingList>> watchLists() => Stream.value([]); // Return an empty stream
-
-  // New methods for ShoppingItem
-  @override
-  Future<int> addItem(ShoppingItemsCompanion item) async => 1;
-
-  @override
-  Future<int> deleteItem(int id) async => 1;
-
-  @override
-  Future<bool> updateItem(ShoppingItem item) async => true;
-
-  @override
-  Stream<List<ShoppingItem>> watchItems(int listId) => Stream.value([]);
-}
-
 void main() {
-  testWidgets('App builds and shows AppBar title', (WidgetTester tester) async {
-    // 2. Provide the mock repository to the app
-    final mockRepository = MockShoppingListRepository();
-
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(repository: mockRepository));
+    await tester.pumpWidget(const MyApp());
 
-    // 3. Verify that the app shows the correct title.
-    // This is a simple but valid test for the new app.
-    expect(find.text('Daftar Belanja'), findsOneWidget);
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
+
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
   });
 }
